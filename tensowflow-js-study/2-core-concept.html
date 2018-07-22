@@ -1,0 +1,112 @@
+<!-- https://js.tensorflow.org/tutorials/core-concepts.html -->
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.12.0"> </script>
+
+    <script>
+        const shape = [2,3];
+        const a = tf.tensor([1.0, 2.0, 3.0, 10.0, 20.0, 30.0], shape);
+        // a.print()
+
+        const b = tf.tensor([[1,2,3], [10,20,30]], shape);
+        // b.print()
+
+        const c = tf.tensor2d([[1.0, 2.0, 3.0], [10.0, 20.0, 30.0]]);
+        // c.print()
+
+        const zeros = tf.zeros([3, 5]);
+        // zeros.print()
+
+        const initialValues = tf.zeros([5]);
+        const biases = tf.variable(initialValues); // initialize biases
+        // biases.print(); // output: [0, 0, 0, 0, 0]
+
+        const updatedValues = tf.tensor1d([0, 1, 0, 1, 0]);
+        biases.assign(updatedValues); // update values of biases
+        // biases.print(); // output: [0, 1, 0, 1, 0]
+
+        const d = tf.tensor2d([[1.0, 2.0], [3.0, 4.0]]);
+        const d_squared = d.square();
+        // d_squared.print();
+
+        const e = tf.tensor2d([[1.0, 2.0], [3.0, 4.0]]);
+        const f = tf.tensor2d([[5.0, 6.0], [7.0, 8.0]]);
+
+        const e_plus_f = e.add(f);
+        // e_plus_f.print();
+
+        const sq_sum = e.add(f).square();
+        // sq_sum.print();
+        const sq_sum_2 = tf.square(tf.add(e, f));
+        // sq_sum_2.print()
+
+        {
+            function predict(input) {
+                return tf.tidy(() => {
+                    const x = tf.scalar(input);
+
+                    const ax2 = a.mul(x.square());
+                    const bx = b.mul(x);
+                    const y = ax2.add(bx).add(c);
+
+                    return y;
+                });
+            }
+
+            // Define constants: y = 2x^2 + 4x + 8
+            const a = tf.scalar(2);
+            const b = tf.scalar(4);
+            const c = tf.scalar(8);
+
+            // Predict output for input of 2
+            const result = predict(2);
+            // result.print() // Output: 24
+        }
+
+        {
+            const model = tf.sequential();
+            model.add(
+            tf.layers.simpleRNN({
+                units: 20,
+                recurrentInitializer: 'GlorotNormal',
+                inputShape: [80, 4]
+            })
+            );
+
+            // TODO: 動かすようにする
+            // const optimizer = tf.train.sgd(LEARNING_RATE);
+            // model.compile({optimizer, loss: 'categoricalCrossentropy'});
+            // model.fit({x: data, y: labels});
+        }
+
+        {
+            const x = tf.tensor2d([[0.0, 2.0], [4.0, 6.0]]);
+            const x_squared = x.square();
+
+            x.dispose();
+            x_squared.dispose();
+        }
+
+        {
+            // tf.tidy takes a function to tidy up after
+            const average = tf.tidy(() => {
+            // tf.tidy will clean up all the GPU memory used by tensors inside
+            // this function, other than the tensor that is returned.
+            //
+            // Even in a short sequence of operations like the one below, a number
+            // of intermediate tensors get created. So it is a good practice to
+            // put your math ops in a tidy!
+            const y = tf.tensor1d([1.0, 2.0, 3.0, 4.0]);
+            const z = tf.ones([4]);
+
+            return y.sub(z).square().mean();
+            });
+
+            // average.print() // Output: 3.5
+        }
+    </script>
+  </head>
+
+  <body>
+  </body>
+</html>
