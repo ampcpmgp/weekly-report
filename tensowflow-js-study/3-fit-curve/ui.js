@@ -15,67 +15,69 @@
  * =============================================================================
  */
 
-async function plotData(container, xs, ys) {
-   const xvals = await xs.data();
-   const yvals = await ys.data();
+import renderChart from 'vega-embed'
 
-   const values = Array.from(yvals).map((y, i) => {
-     return {'x': xvals[i], 'y': yvals[i]};
-   });
+export async function plotData (container, xs, ys) {
+  const xvals = await xs.data()
+  const yvals = await ys.data()
 
-   const spec = {
-     '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
-     'width': 300,
-     'height': 300,
-     'data': {'values': values},
-     'mark': 'point',
-     'encoding': {
-       'x': {'field': 'x', 'type': 'quantitative'},
-       'y': {'field': 'y', 'type': 'quantitative'}
-     }
-   };
+  const values = Array.from(yvals).map((y, i) => {
+    return { 'x': xvals[i], 'y': yvals[i] }
+  })
 
-   return vegaEmbed(container, spec, {actions: false});
- }
+  const spec = {
+    '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
+    'width': 300,
+    'height': 300,
+    'data': { 'values': values },
+    'mark': 'point',
+    'encoding': {
+      'x': { 'field': 'x', 'type': 'quantitative' },
+      'y': { 'field': 'y', 'type': 'quantitative' }
+    }
+  }
 
-async function plotDataAndPredictions(container, xs, ys, preds) {
-   const xvals = await xs.data();
-   const yvals = await ys.data();
-   const predVals = await preds.data();
+  return renderChart(container, spec, { actions: false })
+}
 
-   const values = Array.from(yvals).map((y, i) => {
-     return {'x': xvals[i], 'y': yvals[i], pred: predVals[i]};
-   });
+export async function plotDataAndPredictions (container, xs, ys, preds) {
+  const xvals = await xs.data()
+  const yvals = await ys.data()
+  const predVals = await preds.data()
 
-   const spec = {
-     '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
-     'width': 300,
-     'height': 300,
-     'data': {'values': values},
-     'layer': [
-       {
-         'mark': 'point',
-         'encoding': {
-           'x': {'field': 'x', 'type': 'quantitative'},
-           'y': {'field': 'y', 'type': 'quantitative'}
-         }
-       },
-       {
-         'mark': 'line',
-         'encoding': {
-           'x': {'field': 'x', 'type': 'quantitative'},
-           'y': {'field': 'pred', 'type': 'quantitative'},
-           'color': {'value': 'tomato'}
-         },
-       }
-     ]
-   };
+  const values = Array.from(yvals).map((y, i) => {
+    return { 'x': xvals[i], 'y': yvals[i], pred: predVals[i] }
+  })
 
-   return vegaEmbed(container, spec, {actions: false});
- }
+  const spec = {
+    '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
+    'width': 300,
+    'height': 300,
+    'data': { 'values': values },
+    'layer': [
+      {
+        'mark': 'point',
+        'encoding': {
+          'x': { 'field': 'x', 'type': 'quantitative' },
+          'y': { 'field': 'y', 'type': 'quantitative' }
+        }
+      },
+      {
+        'mark': 'line',
+        'encoding': {
+          'x': { 'field': 'x', 'type': 'quantitative' },
+          'y': { 'field': 'pred', 'type': 'quantitative' },
+          'color': { 'value': 'tomato' }
+        }
+      }
+    ]
+  }
 
-function renderCoefficients(container, coeff) {
-   document.querySelector(container).innerHTML =
-       `<span>a=${coeff.a.toFixed(3)}, b=${coeff.b.toFixed(3)}, c=${
-           coeff.c.toFixed(3)},  d=${coeff.d.toFixed(3)}</span>`;
- }
+  return renderChart(container, spec, { actions: false })
+}
+
+export function renderCoefficients (container, coeff) {
+  document.querySelector(container).innerHTML =
+    `<span>a=${coeff.a.toFixed(3)}, b=${coeff.b.toFixed(3)}, c=${
+      coeff.c.toFixed(3)},  d=${coeff.d.toFixed(3)}</span>`
+}
