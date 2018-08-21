@@ -27,4 +27,17 @@ window.tensorSpecial = () => {
     .toTensor()
     .clone()
     .print()
+
+  tf.eye(4, 2, [2]).print()
+
+  tf.fill([2, 3], 4).print()
+
+  const image = new window.ImageData(1, 1)
+  image.data[0] = 100
+  image.data[1] = 150
+  image.data[2] = 200
+  image.data[3] = 255
+  tf.fromPixels(image).print()
 }
+
+window.tensorSpecial()
