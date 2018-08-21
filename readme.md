@@ -5,8 +5,4 @@ issueに今週やったことを書いていきます。
 
 ```
 npm i # for lint-staged
-# add live server
-# start live server
 ```
-
-
