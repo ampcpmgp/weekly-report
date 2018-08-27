@@ -123,3 +123,13 @@ window.classTensor = async () => {
 }
 
 // window.classTensor()
+
+window.classVariable = () => {
+  const x = tf.variable(tf.tensor([1, 2, 3]))
+  x.assign(tf.tensor([4, 5, 6]))
+  x.print()
+}
+
+window.classVariable()
+
+window.TensorBuffer = () => {}
