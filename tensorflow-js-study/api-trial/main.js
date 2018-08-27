@@ -59,3 +59,67 @@ window.tensorSpecial = () => {
 }
 
 // window.tensorSpecial()
+
+window.classTensor = async () => {
+  const baseTensor = tf.tensor3d([1, 2, 3, 4], [2, 2, 1])
+
+  baseTensor.flatten().print()
+
+  tf.tensor1d([4])
+    .asScalar()
+    .print()
+  tf.tensor2d([5], [1, 1])
+    .as1D()
+    .print()
+  // tf.tensor4d([6], [1, 1, 1, 1]).as2D().print() // FIXME: 動かし方がわからない
+  // tf.tensor4d([6], [1, 1, 1, 1]).as3D().print() // FIXME: 動かし方がわからない
+  // tf.tensor6d([[[[[[6]]]]]]).as4D().print() // FIXME: 動かし方がわからない
+
+  tf.tensor1d([4.5])
+    .asType('int32')
+    .print()
+
+  console.log(tf.tensor1d([5]).buffer())
+
+  const data = await tf.tensor1d([2]).data()
+  console.log(data)
+
+  console.log(tf.tensor1d([3]).dataSync())
+
+  tf.dispose() // メモリ破棄
+
+  tf.tensor1d([4], 'bool')
+    .toFloat()
+    .print()
+  tf.tensor1d([4.5])
+    .toInt()
+    .print()
+  tf.tensor1d([4])
+    .toBool()
+    .print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .reshape([2, 2])
+    .print()
+  // tf.tensor1d([1, 2, 3, 4]).reshapeAs().print() // FIXME: 使い方がわからない
+
+  tf.tensor1d([1, 2, 3, 4])
+    .expandDims(1)
+    .print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .cumsum()
+    .print()
+
+  tf.tensor2d([[5]])
+    .squeeze()
+    .print()
+
+  tf.tensor2d([[5]])
+    .clone()
+    .print()
+
+  console.log(tf.tensor1d([1, 2, 3, 4]).toString())
+}
+
+// window.classTensor()
