@@ -21,7 +21,7 @@ window.tensor = () => {
 
 window.tensorSpecial = () => {
   const buffer = tf.buffer([2, 2])
-  buffer.set(3, 0, 0) // argument - value, x, y
+  buffer.set(3, 0, 0) // value, x, y
   buffer.set(5, 1, 1)
   buffer.toTensor().print()
 
@@ -130,6 +130,16 @@ window.classVariable = () => {
   x.print()
 }
 
-window.classVariable()
+// window.classVariable()
 
-window.TensorBuffer = () => {}
+window.TensorBuffer = () => {
+  const buffer = tf.buffer([2, 2])
+  buffer.set(3, 0, 0) // value, x, y
+  buffer.set(5, 1, 0)
+
+  console.log(buffer.get(1, 0)) // x, y
+
+  buffer.toTensor().print()
+}
+
+// window.TensorBuffer()
