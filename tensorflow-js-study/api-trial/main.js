@@ -175,4 +175,72 @@ window.TensorTransformation = () => {
     .squeeze()
     .print()
 }
-window.TensorTransformation()
+
+// window.TensorTransformation()
+
+window.TensorSliceAndJoin = () => {
+  tf.tensor1d([1, 2])
+    .concat(tf.tensor1d([3, 4]))
+    .print()
+  tf.concat([tf.tensor1d([1]), tf.tensor1d([3])]).print()
+  tf.concat(
+    [tf.tensor2d([[1, 2], [1, 10]]), tf.tensor2d([[3, 2], [5, 10]])],
+    1
+  ).print()
+
+  tf.tensor1d([3, 5, 100])
+    .gather(tf.tensor1d([0, 0, 2], 'int32'))
+    .print()
+  tf.tensor2d([3, 5, 100, 200], [2, 2])
+    .gather(tf.tensor1d([0, 0, 1], 'int32'))
+    .print()
+
+  tf.tensor1d([1, 2, 3])
+    .reverse()
+    .print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .slice([1], [3])
+    .print()
+  tf.tensor2d([1, 2, 3, 4], [2, 2])
+    .slice([1, 0], [1, 2])
+    .print()
+
+  tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]).print()
+  tf.split(tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]), 2, 1)[0].print()
+  tf.split(tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]), 2, 1)[1].print()
+  tf.split(
+    tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]),
+    [1, 2, 1],
+    1
+  )[0].print()
+  tf.split(
+    tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]),
+    [1, 2, 1],
+    1
+  )[1].print()
+  tf.split(
+    tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]),
+    [1, 2, 1],
+    1
+  )[2].print()
+
+  tf.stack([
+    tf.tensor1d([1, 2]),
+    tf.tensor1d([3, 4]),
+    tf.tensor1d([5, 6])
+  ]).print()
+
+  tf.tensor1d([1, 2])
+    .tile([3])
+    .print()
+  tf.tensor2d([1, 2, 3, 4], [2, 2])
+    .tile([3, 1])
+    .print()
+
+  tf.unstack(tf.tensor2d([1, 2, 3, 4], [2, 2])).forEach(tensor =>
+    tensor.print()
+  )
+}
+
+window.TensorSliceAndJoin()
