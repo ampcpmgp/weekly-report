@@ -143,3 +143,36 @@ window.TensorBuffer = () => {
 }
 
 // window.TensorBuffer()
+
+window.TensorTransformation = () => {
+  const blockShape = [2, 2]
+  const crops = [[0, 0], [0, 0]]
+  tf.tensor4d([1, 2, 3, 4], [4, 1, 1, 1]).print()
+  tf.tensor4d([1, 2, 3, 4], [4, 1, 1, 1])
+    .batchToSpaceND(blockShape, crops)
+    .print()
+
+  tf.cast(tf.tensor1d([1.5, 2.5, 3]), 'int32').print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .expandDims(1)
+    .print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .pad([[1, 2]])
+    .print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .reshape([2, 2])
+    .print()
+
+  // 公式通りに書いても動かない。
+  // https://js.tensorflow.org/api/0.12.5/#spaceToBatchND
+  // const paddings = [[0,0],[0,0]]
+  // tf.tensor4d([1, 2, 3, 4], [4, 1, 1, 1]).spaceToBatchND(blockShape, paddings).print()
+
+  tf.tensor([1, 2, 3, 4], [1, 1, 4])
+    .squeeze()
+    .print()
+}
+window.TensorTransformation()
