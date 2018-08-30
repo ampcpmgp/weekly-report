@@ -122,7 +122,7 @@ window.classTensor = async () => {
   console.log(tf.tensor1d([1, 2, 3, 4]).toString())
 }
 
-window.classTensor()
+// window.classTensor()
 
 window.classVariable = () => {
   const x = tf.variable(tf.tensor([1, 2, 3]))
