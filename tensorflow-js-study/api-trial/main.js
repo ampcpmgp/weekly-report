@@ -263,6 +263,39 @@ window.TensorRandom = () => {
 
 // window.TensorRandom()
 
-window.ModelCreation = () => {}
+window.ModelCreationSequential = () => {
+  const model = tf.sequential()
+  model.add(tf.layers.dense({ units: 32, inputShape: [50] }))
+  model.add(tf.layers.dense({ units: 4 }))
+  console.log(JSON.stringify(model.outputs[0].shape))
 
-// window.ModelCreation()
+  const modelBatchShape = tf.sequential()
+  modelBatchShape.add(
+    tf.layers.dense({ units: 32, batchInputShape: [null, 50] })
+  )
+  console.log(JSON.stringify(modelBatchShape.outputs[0].shape))
+
+  const modelConstructedLayer = tf.sequential({
+    layers: [
+      tf.layers.dense({ units: 32, inputShape: [50] }),
+      tf.layers.dense({ units: 4 })
+    ]
+  })
+  console.log(JSON.stringify(modelConstructedLayer.outputs[0].shape))
+}
+
+// window.ModelCreationSequential()
+
+window.ModelCreation = () => {
+  // TODO: shapeの意味とunitsの数値、tf.ones()に意味があるのか、理解する
+  const input = tf.input({ shape: [5] })
+  const denseLayer1 = tf.layers.dense({ units: 10, activation: 'relu' })
+  const denseLayer2 = tf.layers.dense({ units: 4, activation: 'softmax' })
+  const output = denseLayer2.apply(denseLayer1.apply(input))
+  const model = tf.model({ inputs: input, outputs: output })
+
+  tf.ones([2, 5]).print()
+  model.predict(tf.ones([2, 5])).print()
+}
+
+window.ModelCreation()
