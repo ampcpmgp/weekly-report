@@ -243,4 +243,14 @@ window.TensorSliceAndJoin = () => {
   )
 }
 
-window.TensorSliceAndJoin()
+// window.TensorSliceAndJoin()
+
+window.TensorRandom = () => {
+  tf.multinomial(tf.tensor([0.75, 0.25]), 3).print()
+
+  tf.randomNormal([2, 2]).print()
+
+  tf.randomUniform([2, 2]).print()
+}
+
+// window.TensorRandom()
