@@ -71,9 +71,15 @@ window.classTensor = async () => {
   tf.tensor2d([5], [1, 1])
     .as1D()
     .print()
-  tf.tensor4d([6], [1, 1, 1, 1]).as2D(1, 1).print()
-  tf.tensor4d([7], [1, 1, 1, 1]).as3D(1, 1, 1).print()
-  tf.scalar(8).as4D(1, 1, 1 ,1).print()
+  tf.tensor4d([6], [1, 1, 1, 1])
+    .as2D(1, 1)
+    .print()
+  tf.tensor4d([7], [1, 1, 1, 1])
+    .as3D(1, 1, 1)
+    .print()
+  tf.scalar(8)
+    .as4D(1, 1, 1, 1)
+    .print()
 
   tf.tensor1d([4.5])
     .asType('int32')
@@ -149,7 +155,7 @@ window.TensorTransformation = () => {
   const crops = [[0, 0], [0, 0]]
   tf.tensor4d([1, 2, 3, 4], [4, 1, 1, 1]).print()
   tf.tensor4d([1, 2, 3, 4], [4, 1, 1, 1])
-    .batchToSpaceND(blockShape, crops)
+    .batchToSpaceND(blockShape, crops) // TODO: このコードの意味の理解
     .print()
 
   tf.cast(tf.tensor1d([1.5, 2.5, 3]), 'int32').print()
@@ -159,14 +165,14 @@ window.TensorTransformation = () => {
     .print()
 
   tf.tensor1d([1, 2, 3, 4])
-    .pad([[1, 2]])
+    .pad([[1, 2]]) // TODO: このコードの意味の理解
     .print()
 
   tf.tensor1d([1, 2, 3, 4])
     .reshape([2, 2])
     .print()
 
-  // 公式通りに書いても動かない。
+  // FIXME: 公式通りに書いても動かない。
   // https://js.tensorflow.org/api/0.12.5/#spaceToBatchND
   // const paddings = [[0,0],[0,0]]
   // tf.tensor4d([1, 2, 3, 4], [4, 1, 1, 1]).spaceToBatchND(blockShape, paddings).print()
@@ -189,7 +195,7 @@ window.TensorSliceAndJoin = () => {
   ).print()
 
   tf.tensor1d([3, 5, 100])
-    .gather(tf.tensor1d([0, 0, 2], 'int32'))
+    .gather(tf.tensor1d([0, 0, 2], 'int32')) // TODO: このコードの意味の理解
     .print()
   tf.tensor2d([3, 5, 100, 200], [2, 2])
     .gather(tf.tensor1d([0, 0, 1], 'int32'))
@@ -225,6 +231,7 @@ window.TensorSliceAndJoin = () => {
     1
   )[2].print()
 
+  // TODO: このコードの意味の理解
   tf.stack([
     tf.tensor1d([1, 2]),
     tf.tensor1d([3, 4]),
@@ -238,6 +245,7 @@ window.TensorSliceAndJoin = () => {
     .tile([3, 1])
     .print()
 
+  // TODO: このコードの意味の理解
   tf.unstack(tf.tensor2d([1, 2, 3, 4], [2, 2])).forEach(tensor =>
     tensor.print()
   )
@@ -254,3 +262,7 @@ window.TensorRandom = () => {
 }
 
 // window.TensorRandom()
+
+window.ModelCreation = () => {}
+
+// window.ModelCreation()
