@@ -143,3 +143,114 @@ window.TensorBuffer = () => {
 }
 
 // window.TensorBuffer()
+
+window.TensorTransformation = () => {
+  const blockShape = [2, 2]
+  const crops = [[0, 0], [0, 0]]
+  tf.tensor4d([1, 2, 3, 4], [4, 1, 1, 1]).print()
+  tf.tensor4d([1, 2, 3, 4], [4, 1, 1, 1])
+    .batchToSpaceND(blockShape, crops)
+    .print()
+
+  tf.cast(tf.tensor1d([1.5, 2.5, 3]), 'int32').print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .expandDims(1)
+    .print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .pad([[1, 2]])
+    .print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .reshape([2, 2])
+    .print()
+
+  // 公式通りに書いても動かない。
+  // https://js.tensorflow.org/api/0.12.5/#spaceToBatchND
+  // const paddings = [[0,0],[0,0]]
+  // tf.tensor4d([1, 2, 3, 4], [4, 1, 1, 1]).spaceToBatchND(blockShape, paddings).print()
+
+  tf.tensor([1, 2, 3, 4], [1, 1, 4])
+    .squeeze()
+    .print()
+}
+
+// window.TensorTransformation()
+
+window.TensorSliceAndJoin = () => {
+  tf.tensor1d([1, 2])
+    .concat(tf.tensor1d([3, 4]))
+    .print()
+  tf.concat([tf.tensor1d([1]), tf.tensor1d([3])]).print()
+  tf.concat(
+    [tf.tensor2d([[1, 2], [1, 10]]), tf.tensor2d([[3, 2], [5, 10]])],
+    1
+  ).print()
+
+  tf.tensor1d([3, 5, 100])
+    .gather(tf.tensor1d([0, 0, 2], 'int32'))
+    .print()
+  tf.tensor2d([3, 5, 100, 200], [2, 2])
+    .gather(tf.tensor1d([0, 0, 1], 'int32'))
+    .print()
+
+  tf.tensor1d([1, 2, 3])
+    .reverse()
+    .print()
+
+  tf.tensor1d([1, 2, 3, 4])
+    .slice([1], [3])
+    .print()
+  tf.tensor2d([1, 2, 3, 4], [2, 2])
+    .slice([1, 0], [1, 2])
+    .print()
+
+  tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]).print()
+  tf.split(tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]), 2, 1)[0].print()
+  tf.split(tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]), 2, 1)[1].print()
+  tf.split(
+    tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]),
+    [1, 2, 1],
+    1
+  )[0].print()
+  tf.split(
+    tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]),
+    [1, 2, 1],
+    1
+  )[1].print()
+  tf.split(
+    tf.tensor2d([1, 2, 3, 4, 5, 6, 7, 8], [2, 4]),
+    [1, 2, 1],
+    1
+  )[2].print()
+
+  tf.stack([
+    tf.tensor1d([1, 2]),
+    tf.tensor1d([3, 4]),
+    tf.tensor1d([5, 6])
+  ]).print()
+
+  tf.tensor1d([1, 2])
+    .tile([3])
+    .print()
+  tf.tensor2d([1, 2, 3, 4], [2, 2])
+    .tile([3, 1])
+    .print()
+
+  tf.unstack(tf.tensor2d([1, 2, 3, 4], [2, 2])).forEach(tensor =>
+    tensor.print()
+  )
+}
+
+// window.TensorSliceAndJoin()
+
+window.TensorRandom = () => {
+  tf.multinomial(tf.tensor([0.75, 0.25]), 3).print()
+
+  tf.randomNormal([2, 2]).print()
+
+  tf.randomUniform([2, 2]).print()
+}
+
+// window.TensorRandom()
