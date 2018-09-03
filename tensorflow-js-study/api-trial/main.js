@@ -71,9 +71,9 @@ window.classTensor = async () => {
   tf.tensor2d([5], [1, 1])
     .as1D()
     .print()
-  // tf.tensor4d([6], [1, 1, 1, 1]).as2D().print() // FIXME: 動かし方がわからない
-  // tf.tensor4d([6], [1, 1, 1, 1]).as3D().print() // FIXME: 動かし方がわからない
-  // tf.tensor6d([[[[[[6]]]]]]).as4D().print() // FIXME: 動かし方がわからない
+  tf.tensor4d([6], [1, 1, 1, 1]).as2D(1, 1).print()
+  tf.tensor4d([7], [1, 1, 1, 1]).as3D(1, 1, 1).print()
+  tf.scalar(8).as4D(1, 1, 1 ,1).print()
 
   tf.tensor1d([4.5])
     .asType('int32')
