@@ -443,4 +443,24 @@ window.ModelClassFit = async () => {
   }
 }
 
-window.ModelClassFit()
+// window.ModelClassFit()
+
+window.ModelClassSave = async () => {
+  const model = tf.sequential({
+    layers: [
+      tf.layers.dense({
+        units: 1,
+        inputShape: [3]
+      })
+    ]
+  })
+
+  model.predict(tf.ones([1, 3])).print()
+
+  await model.save('localstorage://my-model-1')
+  const loadedModel = await tf.loadModel('localstorage://my-model-1')
+
+  loadedModel.predict(tf.ones([1, 3])).print()
+}
+
+// window.ModelClassSave()
