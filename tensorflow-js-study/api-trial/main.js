@@ -340,3 +340,39 @@ window.ModelLoading = async () => {
 }
 
 // window.ModelLoading()
+
+window.ModelManagement = async () => {
+  const model = tf.sequential()
+  model.add(
+    tf.layers.dense({ units: 1, inputShape: [10], activation: 'sigmoid' })
+  )
+  await model.save('localstorage://demo/management/model1')
+
+  try {
+    await tf.io.removeModel('indexeddb://demo/management/model1')
+  } catch (error) {
+    // no handle
+  }
+
+  console.log(JSON.stringify(await tf.io.listModels(), null, '  '))
+
+  await tf.io.copyModel(
+    'localstorage://demo/management/model1',
+    'indexeddb://demo/management/model1'
+  )
+
+  console.log('---------')
+
+  console.log(JSON.stringify(await tf.io.listModels(), null, '  '))
+
+  await tf.io.moveModel(
+    'localstorage://demo/management/model1',
+    'indexeddb://demo/management/model1'
+  )
+
+  console.log('---------')
+
+  console.log(JSON.stringify(await tf.io.listModels(), null, '  '))
+}
+
+// window.ModelManagement()
