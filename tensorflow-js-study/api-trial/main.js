@@ -298,4 +298,15 @@ window.ModelCreation = () => {
   model.predict(tf.ones([2, 5])).print()
 }
 
-window.ModelCreation()
+// window.ModelCreation()
+
+window.ModelInput = () => {
+  const x = tf.input({ shape: [32] })
+  const y = tf.layers.dense({ units: 3, activation: 'softmax' }).apply(x)
+  const model = tf.model({ inputs: x, outputs: y })
+  const tensor = tf.ones([2, 32])
+  tensor.print()
+  model.predict(tf.ones([2, 32])).print()
+}
+
+// window.ModelInput()
