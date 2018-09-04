@@ -310,3 +310,33 @@ window.ModelInput = () => {
 }
 
 // window.ModelInput()
+
+window.FrozenModelLoading = async () => {
+  const GOOGLE_CLOUD_STORAGE_DIR =
+    'https://storage.googleapis.com/tfjs-models/savedmodel/'
+  const MODEL_URL =
+    GOOGLE_CLOUD_STORAGE_DIR + 'mobilenet_v2_1.0_224/tensorflowjs_model.pb'
+  const WEIGHTS_URL =
+    GOOGLE_CLOUD_STORAGE_DIR + 'mobilenet_v2_1.0_224/weights_manifest.json'
+  const model = await tf.loadFrozenModel(MODEL_URL, WEIGHTS_URL)
+  const zeros = tf.zeros([1, 224, 224, 3])
+  model.predict(zeros).print()
+}
+
+// window.FrozenModelLoading()
+
+window.ModelLoading = async () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [3] })]
+  })
+  console.log('Prediction from original model:')
+  model.predict(tf.ones([1, 3])).print()
+
+  await model.save('localstorage://my-model-1')
+
+  const loadedModel = await tf.loadModel('localstorage://my-model-1')
+  console.log('Prediction from loaded model:')
+  loadedModel.predict(tf.ones([1, 3])).print()
+}
+
+// window.ModelLoading()
