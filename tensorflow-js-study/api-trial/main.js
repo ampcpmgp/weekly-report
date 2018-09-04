@@ -376,3 +376,71 @@ window.ModelManagement = async () => {
 }
 
 // window.ModelManagement()
+
+window.ModelClassSummary = () => {
+  const input1 = tf.input({ shape: [10] })
+  const input2 = tf.input({ shape: [20] })
+  const dense1 = tf.layers.dense({ units: 4 }).apply(input1)
+  const dense2 = tf.layers.dense({ units: 8 }).apply(input2)
+  const concat = tf.layers.concatenate().apply([dense1, dense2])
+  const output = tf.layers
+    .dense({ units: 3, activation: 'softmax' })
+    .apply(concat)
+  const model = tf.model({ inputs: [input1, input2], outputs: output })
+
+  model.summary()
+}
+
+// window.ModelClassSummary()
+
+window.ModelClassEvaluate = () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' })
+
+  const result = model.evaluate(tf.ones([8, 10]), tf.ones([8, 1]), {
+    batchSize: 4
+  })
+  result.print()
+}
+
+// window.ModelClassEvaluate()
+
+window.ModelClassPredict = () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  model.predict(tf.ones([8, 10]), { batchSize: 4 }).print()
+}
+
+// window.ModelClassPredict()
+
+window.ModelClassPredictOnBatch = () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+  model.predictOnBatch(tf.ones([8, 10])).print()
+}
+
+// window.ModelClassPredictOnBatch()
+
+window.ModelClassFit = async () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+  model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' })
+
+  for (let i = 1; i < 5; ++i) {
+    const h = await model.fit(tf.ones([8, 10]), tf.ones([8, 1]), {
+      batchSize: 4,
+      epochs: 3
+    })
+
+    console.log(`Loss after Epoch ${i} : ${h.history.loss[0]}`)
+  }
+}
+
+window.ModelClassFit()
