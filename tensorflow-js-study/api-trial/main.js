@@ -263,6 +263,311 @@ window.TensorRandom = () => {
 
 // window.TensorRandom()
 
-window.ModelCreation = () => {}
+window.ModelCreationSequential = () => {
+  const model = tf.sequential()
+  model.add(tf.layers.dense({ units: 32, inputShape: [50] }))
+  model.add(tf.layers.dense({ units: 4 }))
+  console.log(JSON.stringify(model.outputs[0].shape))
+
+  const modelBatchShape = tf.sequential()
+  modelBatchShape.add(
+    tf.layers.dense({ units: 32, batchInputShape: [null, 50] })
+  )
+  console.log(JSON.stringify(modelBatchShape.outputs[0].shape))
+
+  const modelConstructedLayer = tf.sequential({
+    layers: [
+      tf.layers.dense({ units: 32, inputShape: [50] }),
+      tf.layers.dense({ units: 4 })
+    ]
+  })
+  console.log(JSON.stringify(modelConstructedLayer.outputs[0].shape))
+}
+
+// window.ModelCreationSequential()
+
+window.ModelCreation = () => {
+  // tf.ones()はどのような過程を経て変換されたのかを理解する
+  // input/outputの関係性を重点的に
+  const input = tf.input({ shape: [5] })
+  const denseLayer1 = tf.layers.dense({ units: 10, activation: 'relu' })
+  const denseLayer2 = tf.layers.dense({ units: 4, activation: 'softmax' })
+  const output = denseLayer2.apply(denseLayer1.apply(input))
+  const model = tf.model({ inputs: input, outputs: output })
+
+  tf.ones([2, 5]).print()
+  model.predict(tf.ones([2, 5])).print()
+}
 
 // window.ModelCreation()
+
+window.ModelInput = () => {
+  const x = tf.input({ shape: [32] })
+  const y = tf.layers.dense({ units: 3, activation: 'softmax' }).apply(x)
+  const model = tf.model({ inputs: x, outputs: y })
+  const tensor = tf.ones([2, 32])
+  tensor.print()
+  model.predict(tf.ones([2, 32])).print()
+}
+
+// window.ModelInput()
+
+window.FrozenModelLoading = async () => {
+  const GOOGLE_CLOUD_STORAGE_DIR =
+    'https://storage.googleapis.com/tfjs-models/savedmodel/'
+  const MODEL_URL =
+    GOOGLE_CLOUD_STORAGE_DIR + 'mobilenet_v2_1.0_224/tensorflowjs_model.pb'
+  const WEIGHTS_URL =
+    GOOGLE_CLOUD_STORAGE_DIR + 'mobilenet_v2_1.0_224/weights_manifest.json'
+  const model = await tf.loadFrozenModel(MODEL_URL, WEIGHTS_URL)
+  const zeros = tf.zeros([1, 224, 224, 3])
+  model.predict(zeros).print()
+}
+
+// window.FrozenModelLoading()
+
+window.ModelLoading = async () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [3] })]
+  })
+  console.log('Prediction from original model:')
+  model.predict(tf.ones([1, 3])).print()
+
+  await model.save('localstorage://my-model-1')
+
+  const loadedModel = await tf.loadModel('localstorage://my-model-1')
+  console.log('Prediction from loaded model:')
+  loadedModel.predict(tf.ones([1, 3])).print()
+}
+
+// window.ModelLoading()
+
+window.ModelManagement = async () => {
+  const model = tf.sequential()
+  model.add(
+    tf.layers.dense({ units: 1, inputShape: [10], activation: 'sigmoid' })
+  )
+  await model.save('localstorage://demo/management/model1')
+
+  try {
+    await tf.io.removeModel('indexeddb://demo/management/model1')
+  } catch (error) {
+    // 初回はモデルが無いため、そのエラーは許容
+    console.warn(error)
+  }
+
+  console.log(JSON.stringify(await tf.io.listModels(), null, '  '))
+
+  await tf.io.copyModel(
+    'localstorage://demo/management/model1',
+    'indexeddb://demo/management/model1'
+  )
+
+  console.log('---------')
+
+  console.log(JSON.stringify(await tf.io.listModels(), null, '  '))
+
+  await tf.io.moveModel(
+    'localstorage://demo/management/model1',
+    'indexeddb://demo/management/model1'
+  )
+
+  console.log('---------')
+
+  console.log(JSON.stringify(await tf.io.listModels(), null, '  '))
+}
+
+// window.ModelManagement()
+
+window.ModelClassSummary = () => {
+  const input1 = tf.input({ shape: [10] })
+  const input2 = tf.input({ shape: [20] })
+  const dense1 = tf.layers.dense({ units: 4 }).apply(input1)
+  const dense2 = tf.layers.dense({ units: 8 }).apply(input2)
+  const concat = tf.layers.concatenate().apply([dense1, dense2])
+  const output = tf.layers
+    .dense({ units: 3, activation: 'softmax' })
+    .apply(concat)
+  const model = tf.model({ inputs: [input1, input2], outputs: output })
+
+  model.summary()
+}
+
+// window.ModelClassSummary()
+
+window.ModelClassEvaluate = () => {
+  // TODO: evaluate の動作をきちんと理解する
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' })
+
+  const result = model.evaluate(tf.ones([8, 10]), tf.ones([8, 1]), {
+    batchSize: 4
+  })
+  result.print()
+}
+
+// window.ModelClassEvaluate()
+
+window.ModelClassPredict = () => {
+  // TODO: predict の意味をきちんと理解する
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  model.predict(tf.ones([8, 10]), { batchSize: 4 }).print()
+}
+
+// window.ModelClassPredict()
+
+window.ModelClassPredictOnBatch = () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+  model.predictOnBatch(tf.ones([8, 10])).print()
+}
+
+// window.ModelClassPredictOnBatch()
+
+window.ModelClassFit = async () => {
+  // TODO: fit の意味をきちんと理解する
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+  model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' })
+
+  for (let i = 1; i < 5; ++i) {
+    const h = await model.fit(tf.ones([8, 10]), tf.ones([8, 1]), {
+      batchSize: 4,
+      epochs: 3
+    })
+
+    console.log(`Loss after Epoch ${i} : ${h.history.loss[0]}`)
+  }
+}
+
+// window.ModelClassFit()
+
+window.ModelClassSave = async () => {
+  const model = tf.sequential({
+    layers: [
+      tf.layers.dense({
+        units: 1,
+        inputShape: [3]
+      })
+    ]
+  })
+
+  model.predict(tf.ones([1, 3])).print()
+
+  await model.save('localstorage://my-model-1')
+  const loadedModel = await tf.loadModel('localstorage://my-model-1')
+
+  loadedModel.predict(tf.ones([1, 3])).print()
+}
+
+// window.ModelClassSave()
+
+window.SequentialClass = async () => {
+  const model = tf.sequential()
+  model.add(tf.layers.dense({ units: 1, inputShape: [1] }))
+  model.compile({ loss: 'meanSquaredError', optimizer: 'sgd' })
+
+  const xs = tf.tensor2d([1, 2, 3, 4], [4, 1])
+  const ys = tf.tensor2d([1, 3, 5, 7], [4, 1])
+
+  await model.fit(xs, ys)
+  model.predict(tf.tensor2d([5], [1, 1])).print()
+}
+
+// window.SequentialClass()
+
+window.SequentialClassAdd = () => {
+  // TODO: randomNormal が 2次元テンソルになってる理由と、
+  // 指定したinputShapeがそれに合う理由を理解し、後続のモデル追加を試す。
+
+  // 参考
+  // tf.tensor1d([1, 2, 3]).print()
+  // tf.tensor2d([1, 2, 3, 4], [4, 1]).print()
+
+  const model = tf.sequential()
+
+  model.add(tf.layers.dense({ units: 8, inputShape: [1] }))
+  // model.add(tf.layers.dense({units: 4, activation: 'relu6'}))
+  // model.add(tf.layers.dense({units: 1, activation: 'relu6'}))
+
+  const tensor = tf.randomNormal([10, 1])
+
+  tensor.print()
+  model.predict(tensor).print()
+}
+
+// window.SequentialClassAdd()
+
+window.SequentialClassSummary = () => {
+  const model = tf.sequential()
+
+  model.add(
+    tf.layers.dense({ units: 100, inputShape: [10], activation: 'relu' })
+  )
+  model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }))
+
+  model.summary()
+}
+
+// window.SequentialClassSummary()
+
+window.SequentialClassEvaluate = () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' })
+
+  // TODO: evaluate がどう動いているのかをちゃんと理解する
+  const result = model.evaluate(tf.ones([8, 10]), tf.ones([8, 1]), {
+    batchSize: 4
+  })
+
+  result.print()
+}
+
+// window.SequentialClassEvaluate()
+
+window.SequentialClassPredict = () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  const ones = tf.ones([2, 10])
+
+  ones.print()
+  model.predict(ones).print()
+}
+
+// window.SequentialClassPredict()
+
+window.SequentialClassFit = async () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' })
+
+  const history = await model.fit(tf.ones([8, 10]), tf.ones([8, 1]), {
+    batchSize: 4,
+    epochs: 3
+  })
+
+  console.log(history.history.loss[0])
+}
+
+// window.SequentialClassFit()
+
+window.SymbolicTensorClass = () => {
+  // 具体的な値を持たないTensorのプレースホルダ
+}
+
+// window.SymbolicTensorClass()
