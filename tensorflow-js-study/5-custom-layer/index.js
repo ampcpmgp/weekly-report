@@ -26,13 +26,16 @@ function customLayerDemo () {
     .fromPixels(imgElement)
     .toFloat()
     .expandDims(0)
+
   const layer = antirectifier()
   const [posTensor, negTensor] = tf.split(layer.apply(img), 2, 3)
   const posCanvas = document.createElement('canvas')
   tensorToCanvas(posTensor, posCanvas)
+  document.getElementById('output_image_1').innerHTML = ''
   document.getElementById('output_image_1').appendChild(posCanvas)
   const negCanvas = document.createElement('canvas')
   tensorToCanvas(negTensor, negCanvas)
+  document.getElementById('output_image_2').innerHTML = ''
   document.getElementById('output_image_2').appendChild(negCanvas)
 }
 
