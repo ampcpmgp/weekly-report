@@ -14,7 +14,7 @@
     "vega-lite": "^2.3.1"
   },
   "scripts": {
-    "watch": "cross-env NODE_ENV=development parcel index.html --open",
+    "start": "cross-env NODE_ENV=development parcel index.html --open",
     "build": "cross-env NODE_ENV=production parcel build index.html -d build --no-minify --public-url ./",
     "postinstall": "yarn upgrade --pattern @tensorflow"
   },
