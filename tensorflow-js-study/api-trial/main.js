@@ -477,4 +477,24 @@ window.SequentialClass = async () => {
   model.predict(tf.tensor2d([5], [1, 1])).print()
 }
 
-window.SequentialClass()
+// window.SequentialClass()
+
+window.SequentialClassAdd = () => {
+  // TODO: randomNormal が 2次元テンソルになってる理由と、
+  // 指定したinputShapeがそれに合う理由を理解する
+
+  // 参考
+  // tf.tensor1d([1, 2, 3]).print()
+  // tf.tensor2d([1, 2, 3, 4], [4, 1]).print()
+
+  const model = tf.sequential()
+
+  model.add(tf.layers.dense({ units: 8, inputShape: [1] }))
+
+  const tensor = tf.randomNormal([10, 1])
+
+  tensor.print()
+  model.predict(tensor).print()
+}
+
+window.SequentialClassAdd()
