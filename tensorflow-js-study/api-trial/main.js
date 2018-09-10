@@ -287,7 +287,8 @@ window.ModelCreationSequential = () => {
 // window.ModelCreationSequential()
 
 window.ModelCreation = () => {
-  // TODO: shapeの意味とunitsの数値、tf.ones()に意味があるのか、理解する
+  // tf.ones()はどのような過程を経て変換されたのかを理解する
+  // input/outputの関係性を重点的に
   const input = tf.input({ shape: [5] })
   const denseLayer1 = tf.layers.dense({ units: 10, activation: 'relu' })
   const denseLayer2 = tf.layers.dense({ units: 4, activation: 'softmax' })
@@ -351,7 +352,8 @@ window.ModelManagement = async () => {
   try {
     await tf.io.removeModel('indexeddb://demo/management/model1')
   } catch (error) {
-    // no handle
+    // 初回はモデルが無いため、そのエラーは許容
+    console.warn(error)
   }
 
   console.log(JSON.stringify(await tf.io.listModels(), null, '  '))
@@ -394,6 +396,7 @@ window.ModelClassSummary = () => {
 // window.ModelClassSummary()
 
 window.ModelClassEvaluate = () => {
+  // TODO: evaluate の動作をきちんと理解する
   const model = tf.sequential({
     layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
   })
@@ -409,6 +412,7 @@ window.ModelClassEvaluate = () => {
 // window.ModelClassEvaluate()
 
 window.ModelClassPredict = () => {
+  // TODO: predict の意味をきちんと理解する
   const model = tf.sequential({
     layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
   })
@@ -428,6 +432,7 @@ window.ModelClassPredictOnBatch = () => {
 // window.ModelClassPredictOnBatch()
 
 window.ModelClassFit = async () => {
+  // TODO: fit の意味をきちんと理解する
   const model = tf.sequential({
     layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
   })
