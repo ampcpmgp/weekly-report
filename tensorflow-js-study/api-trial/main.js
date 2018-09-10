@@ -481,7 +481,7 @@ window.SequentialClass = async () => {
 
 window.SequentialClassAdd = () => {
   // TODO: randomNormal が 2次元テンソルになってる理由と、
-  // 指定したinputShapeがそれに合う理由を理解する
+  // 指定したinputShapeがそれに合う理由を理解し、後続のモデル追加を試す。
 
   // 参考
   // tf.tensor1d([1, 2, 3]).print()
@@ -490,6 +490,8 @@ window.SequentialClassAdd = () => {
   const model = tf.sequential()
 
   model.add(tf.layers.dense({ units: 8, inputShape: [1] }))
+  // model.add(tf.layers.dense({units: 4, activation: 'relu6'}))
+  // model.add(tf.layers.dense({units: 1, activation: 'relu6'}))
 
   const tensor = tf.randomNormal([10, 1])
 
@@ -497,4 +499,70 @@ window.SequentialClassAdd = () => {
   model.predict(tensor).print()
 }
 
-window.SequentialClassAdd()
+// window.SequentialClassAdd()
+
+window.SequentialClassSummary = () => {
+  const model = tf.sequential()
+
+  model.add(
+    tf.layers.dense({ units: 100, inputShape: [10], activation: 'relu' })
+  )
+  model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }))
+
+  model.summary()
+}
+
+// window.SequentialClassSummary()
+
+window.SequentialClassEvaluate = () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' })
+
+  // TODO: evaluate がどう動いているのかをちゃんと理解する
+  const result = model.evaluate(tf.ones([8, 10]), tf.ones([8, 1]), {
+    batchSize: 4
+  })
+
+  result.print()
+}
+
+// window.SequentialClassEvaluate()
+
+window.SequentialClassPredict = () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  const ones = tf.ones([2, 10])
+
+  ones.print()
+  model.predict(ones).print()
+}
+
+// window.SequentialClassPredict()
+
+window.SequentialClassFit = async () => {
+  const model = tf.sequential({
+    layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
+  })
+
+  model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' })
+
+  const history = await model.fit(tf.ones([8, 10]), tf.ones([8, 1]), {
+    batchSize: 4,
+    epochs: 3
+  })
+
+  console.log(history.history.loss[0])
+}
+
+// window.SequentialClassFit()
+
+window.SymbolicTensorClass = () => {
+  // 具体的な値を持たないTensorのプレースホルダ
+}
+
+// window.SymbolicTensorClass()
