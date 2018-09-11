@@ -131,7 +131,7 @@ const BATCH_SIZE = 64
 // The number of batches to train on before freezing the model and considering
 // it trained. This will result in BATCH_SIZE x TRAIN_BATCHES examples being
 // fed to the model during training.
-const TRAIN_BATCHES = 150
+const TRAIN_BATCHES = 30
 
 // Every few batches, test accuracy over many examples. Ideally, we'd compute
 // accuracy over the whole test set, but for performance we'll use a subset.
