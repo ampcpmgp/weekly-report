@@ -20,7 +20,7 @@ import * as tf from '@tensorflow/tfjs'
 // This is a helper class for loading and managing MNIST data specifically.
 // It is a useful example of how you could create your own data manager class
 // for arbitrary data though. It's worth a look :)
-import {MnistData} from './data'
+import { MnistData } from './data'
 
 // This is a helper class for drawing loss graphs and MNIST images to the
 // window. For the purposes of understanding the machine learning bits, you can
@@ -38,31 +38,35 @@ const model = tf.sequential()
 // black and white images. This input layer uses 8 filters with a kernel size
 // of 5 pixels each. It uses a simple RELU activation function which pretty
 // much just looks like this: __/
-model.add(tf.layers.conv2d({
-  inputShape: [28, 28, 1],
-  kernelSize: 5,
-  filters: 32,
-  strides: 1,
-  activation: 'relu',
-  kernelInitializer: 'varianceScaling'
-}))
+model.add(
+  tf.layers.conv2d({
+    inputShape: [28, 28, 1],
+    kernelSize: 5,
+    filters: 32,
+    strides: 1,
+    activation: 'relu',
+    kernelInitializer: 'varianceScaling'
+  })
+)
 
 // After the first layer we include a MaxPooling layer. This acts as a sort of
 // downsampling using max values in a region instead of averaging.
 // https://www.quora.com/What-is-max-pooling-in-convolutional-neural-networks
-model.add(tf.layers.maxPooling2d({poolSize: [2, 2], strides: [2, 2]}))
+model.add(tf.layers.maxPooling2d({ poolSize: [2, 2], strides: [2, 2] }))
 
 // Our third layer is another convolution, this time with 16 filters.
-model.add(tf.layers.conv2d({
-  kernelSize: 5,
-  filters: 32,
-  strides: 1,
-  activation: 'relu',
-  kernelInitializer: 'varianceScaling'
-}))
+model.add(
+  tf.layers.conv2d({
+    kernelSize: 5,
+    filters: 32,
+    strides: 1,
+    activation: 'relu',
+    kernelInitializer: 'varianceScaling'
+  })
+)
 
 // Max pooling again.
-model.add(tf.layers.maxPooling2d({poolSize: [2, 2], strides: [2, 2]}))
+model.add(tf.layers.maxPooling2d({ poolSize: [2, 2], strides: [2, 2] }))
 
 // Now we flatten the output from the 2D filters into a 1D vector to prepare
 // it for input into our last layer. This is common practice when feeding
@@ -76,8 +80,13 @@ model.add(tf.layers.flatten())
 // We use the softmax function as the activation for the output layer as it
 // creates a probability distribution over our 10 classes so their output values
 // sum to 1.
-model.add(tf.layers.dense(
-  {units: 10, kernelInitializer: 'varianceScaling', activation: 'softmax'}))
+model.add(
+  tf.layers.dense({
+    units: 10,
+    kernelInitializer: 'varianceScaling',
+    activation: 'softmax'
+  })
+)
 
 // Now that we've defined our model, we will define our optimizer. The optimizer
 // will be used to optimize our model's weight values during training so that
@@ -153,7 +162,8 @@ async function train () {
         validationData = [
           // Reshape the training data from [64, 28x28] to [64, 28, 28, 1] so
           // that we can feed it to our convolutional neural net.
-          testBatch.xs.reshape([TEST_BATCH_SIZE, 28, 28, 1]), testBatch.labels
+          testBatch.xs.reshape([TEST_BATCH_SIZE, 28, 28, 1]),
+          testBatch.labels
         ]
       }
       return [batch, validationData]
@@ -161,19 +171,21 @@ async function train () {
 
     // The entire dataset doesn't fit into memory so we call train repeatedly
     // with batches using the fit() method.
-    const history = await model.fit(
-      batch.xs, batch.labels,
-      {batchSize: BATCH_SIZE, validationData, epochs: 1})
+    const history = await model.fit(batch.xs, batch.labels, {
+      batchSize: BATCH_SIZE,
+      validationData,
+      epochs: 1
+    })
 
     const loss = history.history.loss[0]
     const accuracy = history.history.acc[0]
 
     // Plot loss / accuracy.
-    lossValues.push({'batch': i, 'loss': loss, 'set': 'train'})
+    lossValues.push({ batch: i, loss: loss, set: 'train' })
     ui.plotLosses(lossValues)
 
     if (validationData != null) {
-      accuracyValues.push({'batch': i, 'accuracy': accuracy, 'set': 'train'})
+      accuracyValues.push({ batch: i, accuracy: accuracy, set: 'train' })
       ui.plotAccuracies(accuracyValues)
     }
 
