@@ -26,12 +26,6 @@ const NUM_DATASET_ELEMENTS = 65000
 const NUM_TRAIN_ELEMENTS = 55000
 const NUM_TEST_ELEMENTS = NUM_DATASET_ELEMENTS - NUM_TRAIN_ELEMENTS
 
-/**
- * A class that fetches the sprited MNIST dataset and returns shuffled batches.
- *
- * NOTE: This will get much easier. For now, we do data fetching and
- * manipulation manually.
- */
 export class MnistData {
   constructor () {
     this.shuffledTrainIndex = 0
@@ -39,7 +33,6 @@ export class MnistData {
   }
 
   async load () {
-    // Make a request for the MNIST sprited image.
     const img = new window.Image()
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
@@ -78,8 +71,6 @@ export class MnistData {
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 
           for (let j = 0; j < imageData.data.length / 4; j++) {
-            // All channels hold an equal value since the image is grayscale, so
-            // just read the red channel.
             datasetBytesView[j] = imageData.data[j * 4] / 255
           }
         }
@@ -99,13 +90,8 @@ export class MnistData {
     void imgResponse
 
     this.datasetLabels = new Uint8Array(await labelsResponse.arrayBuffer())
-
-    // Create shuffled indices into the train/test set for when we select a
-    // random dataset element for training / validation.
     this.trainIndices = tf.util.createShuffledIndices(NUM_TRAIN_ELEMENTS)
     this.testIndices = tf.util.createShuffledIndices(NUM_TEST_ELEMENTS)
-
-    // Slice the the images and labels into train and test sets.
     this.trainImages = this.datasetImages.slice(
       0,
       IMAGE_SIZE * NUM_TRAIN_ELEMENTS
