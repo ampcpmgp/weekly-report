@@ -21,6 +21,10 @@ const statusElement = document.getElementById('status')
 const messageElement = document.getElementById('message')
 const imagesElement = document.getElementById('images')
 
+export function init () {
+  imagesElement.innerHTML = ''
+}
+
 export function isTraining () {
   statusElement.innerText = 'Training...'
 }

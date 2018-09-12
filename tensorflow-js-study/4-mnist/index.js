@@ -19,6 +19,8 @@ import * as tf from '@tensorflow/tfjs'
 import { MnistData } from './data'
 import * as ui from './ui'
 
+window.tf = tf
+
 const model = tf.sequential()
 
 model.add(
@@ -62,7 +64,7 @@ model.compile({
 })
 
 const BATCH_SIZE = 64
-const TRAIN_BATCHES = 30
+const TRAIN_BATCHES = 45
 const TEST_BATCH_SIZE = 1000
 const TEST_ITERATION_FREQUENCY = 5
 
@@ -120,8 +122,8 @@ async function showPredictions () {
   tf.tidy(() => {
     const output = model.predict(batch.xs.reshape([-1, 28, 28, 1]))
     const axis = 1
-    const labels = Array.from(batch.labels.argMax(axis).dataSync())
     const predictions = Array.from(output.argMax(axis).dataSync())
+    const labels = Array.from(batch.labels.argMax(axis).dataSync())
 
     ui.showTestResults(batch, predictions, labels)
   })
@@ -134,6 +136,7 @@ async function load () {
 }
 
 async function mnist () {
+  ui.init()
   await load()
   await train()
   showPredictions()
