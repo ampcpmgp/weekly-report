@@ -396,13 +396,13 @@ window.ModelClassSummary = () => {
 // window.ModelClassSummary()
 
 window.ModelClassEvaluate = () => {
-  // TODO: evaluate の動作をきちんと理解する
   const model = tf.sequential({
     layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
   })
 
   model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' })
 
+  // TODO: evaluate の動作をきちんと理解する
   const result = model.evaluate(tf.ones([8, 10]), tf.ones([8, 1]), {
     batchSize: 4
   })
@@ -412,7 +412,6 @@ window.ModelClassEvaluate = () => {
 // window.ModelClassEvaluate()
 
 window.ModelClassPredict = () => {
-  // TODO: predict の意味をきちんと理解する
   const model = tf.sequential({
     layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
   })
@@ -432,7 +431,6 @@ window.ModelClassPredictOnBatch = () => {
 // window.ModelClassPredictOnBatch()
 
 window.ModelClassFit = async () => {
-  // TODO: fit の意味をきちんと理解する
   const model = tf.sequential({
     layers: [tf.layers.dense({ units: 1, inputShape: [10] })]
   })
