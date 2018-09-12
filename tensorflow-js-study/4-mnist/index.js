@@ -25,7 +25,7 @@ model.add(
   tf.layers.conv2d({
     inputShape: [28, 28, 1],
     kernelSize: 5,
-    filters: 32,
+    filters: 6,
     strides: 1,
     activation: 'relu',
     kernelInitializer: 'varianceScaling'
@@ -35,7 +35,7 @@ model.add(tf.layers.maxPooling2d({ poolSize: [2, 2], strides: [2, 2] }))
 model.add(
   tf.layers.conv2d({
     kernelSize: 5,
-    filters: 32,
+    filters: 16,
     strides: 1,
     activation: 'relu',
     kernelInitializer: 'varianceScaling'
