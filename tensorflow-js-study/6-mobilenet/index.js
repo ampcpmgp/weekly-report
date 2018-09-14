@@ -16,11 +16,12 @@
  */
 
 import * as tf from '@tensorflow/tfjs'
-import MOBILENET_MODEL_PATH from './model.json'
 import { IMAGENET_CLASSES } from './imagenet_classes'
 
 const IMAGE_SIZE = 224
 const TOPK_PREDICTIONS = 10
+
+const MOBILENET_MODEL_PATH = 'http://localhost:5000'
 
 let mobilenet
 const mobilenetDemo = async () => {
