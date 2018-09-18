@@ -32,6 +32,9 @@
       "prettier --write",
       "standard --fix",
       "git add"
+    ],
+    "ignore": [
+      "**/lib/*.js"
     ]
   }
 }
