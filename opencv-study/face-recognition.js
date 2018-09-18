@@ -1,4 +1,3 @@
-
 var netDet
 var netRecogn
 var cv = window.cv
