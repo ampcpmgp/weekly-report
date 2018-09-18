@@ -162,10 +162,6 @@ function main () {
   document.getElementById('startStopButton').disabled = false
 };
 
-function setup () {
-  cv['onRuntimeInitialized'] = () => {
-    main()
-  }
+cv['onRuntimeInitialized'] = () => {
+  main()
 }
-
-setup()
