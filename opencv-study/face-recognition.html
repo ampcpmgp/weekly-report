@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html>
+<body>
+  <button id="startStopButton" type="button" disabled="true">Start</button>
+  <div id="status"></div>
+  <canvas id="output" width=640 height=480 style="max-width: 100%"></canvas>
+
+  <table>
+    <tr id="targetImgs"></tr>
+    <tr id="targetNames"></tr>
+  </table>
+  <button id="addPersonButton" type="button" disabled="true">Add a person</button>
+
+  <script src="./lib/opencv.js" type="text/javascript"></script>
+  <script src="./lib/utils.js" type="text/javascript"></script>
+  <script src="./face-recognition.js"></script>
+</body>
+
+</html>
