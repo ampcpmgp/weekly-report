@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "parcel --open index.html",
-    "build": "parcel build index.html  --no-minify --public-url ./",
+    "build": "parcel build index.html -d public --public-url ./",
     "lint": "eslint .",
     "link-local": "yalc link @tensorflow-models/object-detection"
   },
