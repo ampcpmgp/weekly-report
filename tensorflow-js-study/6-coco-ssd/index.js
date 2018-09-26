@@ -16,7 +16,7 @@
  */
 
 // TODO(ping): Switch to package import when the npm is published.
-import * as objectDetection from '../src'
+import * as objectDetection from './src'
 
 import imageURL from './image1.jpg'
 import image2URL from './image2.jpg'

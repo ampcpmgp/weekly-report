@@ -1,39 +1,53 @@
 {
-  "name": "@tensorflow-models/coco-ssd",
-  "version": "0.1.0",
-  "description": "Object detection model (coco-ssd) in TensorFlow.js",
-  "main": "dist/index.js",
-  "unpkg": "dist/coco-ssd.min.js",
-  "jsdelivr": "dist/coco-ssd.min.js",
-  "jsnext:main": "dist/coco-ssd.esm.js",
-  "module": "dist/coco-ssd.esm.js",
-  "types": "dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tensorflow/tfjs-models.git"
+  "name": "tfjs-object-detection-demo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "private": true,
+  "engines": {
+    "node": ">=8.9.0"
   },
-  "peerDependencies": {
-    "@tensorflow/tfjs": "^0.12.7"
-  },
-  "devDependencies": {
-    "@tensorflow/tfjs": "^0.12.7",
-    "@types/jasmine": "~2.8.8",
-    "babel-core": "~6.26.0",
-    "babel-plugin-transform-runtime": "~6.23.0",
-    "rollup": "~0.60.7",
-    "rollup-plugin-node-resolve": "~3.3.0",
-    "rollup-plugin-typescript2": "~0.15.0",
-    "rollup-plugin-uglify": "~3.0.0",
-    "ts-node": "~5.0.0",
-    "tslint": "~5.10.0",
-    "typescript": "2.9.2",
-    "yalc": "~1.0.0-pre.21"
+  "dependencies": {
+    "@tensorflow/tfjs": "0.12.7",
+    "stats.js": "^0.17.0"
   },
   "scripts": {
-    "build": "tsc",
-    "lint": "tslint -p . -t verbose",
-    "publish-local": "yarn build && yalc push",
-    "test": "yarn build && ts-node run_tests.ts"
+    "start": "parcel --open index.html",
+    "build": "parcel build index.html  --no-minify --public-url ./",
+    "lint": "eslint .",
+    "link-local": "yalc link @tensorflow-models/object-detection"
   },
-  "license": "Apache-2.0"
+  "devDependencies": {
+    "babel-plugin-transform-runtime": "~6.23.0",
+    "babel-polyfill": "~6.26.0",
+    "babel-preset-env": "~1.6.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-runtime": "6.26.0",
+    "clang-format": "~1.2.2",
+    "dat.gui": "^0.7.1",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "parcel-bundler": "~1.6.2",
+    "parcel-plugin-json-url-loader": "^0.1.1",
+    "typescript": "^3.0.3",
+    "yalc": "~1.0.0-pre.21"
+  },
+  "eslintConfig": {
+    "extends": "google",
+    "rules": {
+      "require-jsdoc": 0,
+      "valid-jsdoc": 0
+    },
+    "env": {
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 8,
+      "sourceType": "module"
+    }
+  },
+  "eslintIgnore": [
+    "dist/"
+  ]
 }
