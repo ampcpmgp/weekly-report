@@ -4,7 +4,7 @@ issueに今週やったことを書いていきます。
 学習用コードやサンプルがある場合、レポジトリにコードをコミットしていきます。
 
 ```shell
-npm i # for lint-staged
+yarn # for lint-staged
 ```
 
 
