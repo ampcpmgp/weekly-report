@@ -53,6 +53,9 @@ export class ObjectDetection {
     this.model = await tf.loadFrozenModel(this.modelPath, this.weightPath);
 
     // Warmup the model.
+    // TODO: tf.zerosの300の指定の意味を理解すること
+    // TODO: tf.executeAsyncの公式ドキュメントが来たら動きと照らし合わせること
+    // TODO: dataメソッドを呼び出すと何が起こるか理解すること
     const result = await this.model.executeAsync(tf.zeros([1, 300, 300, 3])) as
         tf.Tensor[];
     result.map(async (t) => await t.data());
