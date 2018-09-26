@@ -21,6 +21,12 @@ import * as objectDetection from '../src'
 import imageURL from './image1.jpg'
 import image2URL from './image2.jpg'
 
+if (module.hot) {
+  module.hot.dispose(function () {
+    window.location.reload()
+  })
+}
+
 let modelPromise
 
 window.onload = () => {
@@ -46,7 +52,7 @@ image.src = imageURL
 const runButton = document.getElementById('run')
 runButton.onclick = async () => {
   const model = await modelPromise
-  const result = await model.detect(image)
+  const result = await model.infer(image)
 
   const c = document.getElementById('canvas')
   const context = c.getContext('2d')

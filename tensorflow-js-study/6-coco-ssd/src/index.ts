@@ -62,9 +62,9 @@ export class ObjectDetection {
    * objects. There can be multiple objects of the same class, but at different
    * locations. Defaults to 20.
    */
-  private async infer(
+  async infer(
       img: tf.Tensor3D|ImageData|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement,
-      maxNumBoxes: number
+      maxNumBoxes: number = 20
     ): Promise<DetectedObject[]> {
       const batched = tf.tidy(() => {
         if (!(img instanceof tf.Tensor)) {
@@ -171,24 +171,6 @@ export class ObjectDetection {
       }
       return [maxes, classes];
     }
-
-  /**
-   * Detect objects for an image returning a list of bounding boxes with
-   * assocated class and score.
-   *
-   * @param img The image to detect objects from. Can be a tensor or a DOM
-   *     element image, video, or canvas.
-   * @param maxNumBoxes The maximum number of bounding boxes of detected
-   * objects. There can be multiple objects of the same class, but at different
-   * locations. Defaults to 20.
-   *
-   */
-  async detect(
-      img: tf.Tensor3D|ImageData|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement,
-      maxNumBoxes = 20
-    ): Promise<DetectedObject[]> {
-    return this.infer(img, maxNumBoxes);
-  }
 
   /**
    * Dispose the tensors allocated by the model. You should call this when you
