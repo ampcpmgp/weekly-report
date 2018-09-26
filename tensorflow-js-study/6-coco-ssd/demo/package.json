@@ -13,7 +13,7 @@
     "stats.js": "^0.17.0"
   },
   "scripts": {
-    "watch": "parcel --no-hmr --open index.html ",
+    "watch": "parcel --open index.html ",
     "build": "parcel build index.html  --no-minify --public-url ./",
     "lint": "eslint .",
     "link-local": "yalc link @tensorflow-models/object-detection"

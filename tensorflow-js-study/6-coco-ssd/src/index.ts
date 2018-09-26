@@ -51,15 +51,6 @@ export class ObjectDetection {
 
   async load() {
     this.model = await tf.loadFrozenModel(this.modelPath, this.weightPath);
-
-    // Warmup the model.
-    // TODO: tf.zerosの300の指定の意味を理解すること
-    // TODO: tf.executeAsyncの公式ドキュメントが来たら動きと照らし合わせること
-    // TODO: dataメソッドを呼び出すと何が起こるか理解すること
-    const result = await this.model.executeAsync(tf.zeros([1, 300, 300, 3])) as
-        tf.Tensor[];
-    result.map(async (t) => await t.data());
-    result.map(async (t) => t.dispose());
   }
 
   /**
@@ -72,102 +63,114 @@ export class ObjectDetection {
    * locations. Defaults to 20.
    */
   private async infer(
-      img: tf.Tensor3D|ImageData|HTMLImageElement|HTMLCanvasElement|
-      HTMLVideoElement,
-      maxNumBoxes: number): Promise<DetectedObject[]> {
-    const batched = tf.tidy(() => {
-      if (!(img instanceof tf.Tensor)) {
-        img = tf.fromPixels(img);
-      }
-      // Reshape to a single-element batch so we can pass it to executeAsync.
-      return img.expandDims(0);
-    })
-    const height = batched.shape[1];
-    const width = batched.shape[2];
+      img: tf.Tensor3D|ImageData|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement,
+      maxNumBoxes: number
+    ): Promise<DetectedObject[]> {
+      const batched = tf.tidy(() => {
+        if (!(img instanceof tf.Tensor)) {
+          img = tf.fromPixels(img);
+        }
+        // Reshape to a single-element batch so we can pass it to executeAsync.
+        return img.expandDims(0);
+      })
+      const height = batched.shape[1];
+      const width = batched.shape[2];
 
-    // model returns two tensors:
-    // 1. box classification score with shape of [1, 1917, 90]
-    // 2. box location with shape of [1, 1917, 1, 4]
-    // where 1917 is the number of box detectors, 90 is the number of classes.
-    // and 4 is the four coordinates of the box.
-    const result = await this.model.executeAsync(batched) as tf.Tensor[];
+      // model returns two tensors:
+      // 1. box classification score with shape of [1, 1917, 90]
+      // 2. box location with shape of [1, 1917, 1, 4]
+      // where 1917 is the number of box detectors, 90 is the number of classes.
+      // and 4 is the four coordinates of the box.
+      const result = await this.model.executeAsync(batched) as tf.Tensor[];
 
-    const scores = result[0].dataSync() as Float32Array;
-    const boxes = result[1].dataSync() as Float32Array;
+      const scores = result[0].dataSync() as Float32Array;
+      const boxes = result[1].dataSync() as Float32Array;
 
-    // clean the webgl tensors
-    batched.dispose();
-    tf.dispose(result);
+      // clean the webgl tensors
+      batched.dispose();
+      tf.dispose(result);
 
-    const [maxScores, classes] =
-        this.calculateMaxScores(scores, result[0].shape[1], result[0].shape[2]);
+      // get classification
+      const [maxScores, classes] =
+          this.calculateMaxScores(scores, result[0].shape[1], result[0].shape[2]);
 
-    const prevBackend = tf.getBackend();
-    // run post process in cpu
-    tf.setBackend('cpu');
-    const indexTensor = tf.tidy(() => {
-      const boxes2 =
-          tf.tensor2d(boxes, [result[1].shape[1], result[1].shape[3]]);
-      return tf.image.nonMaxSuppression(
-          boxes2, maxScores, maxNumBoxes, 0.5, 0.5);
-    });
+      const prevBackend = tf.getBackend();
+      // run post process in cpu
+      tf.setBackend('cpu');
 
-    const indexes = indexTensor.dataSync() as Float32Array;
-    indexTensor.dispose();
+      // get location?
+      const indexTensor = tf.tidy(() => {
+        const boxes2 =
+            tf.tensor2d(boxes, [result[1].shape[1], result[1].shape[3]]);
+        return tf.image.nonMaxSuppression(
+            boxes2, maxScores, maxNumBoxes, 0.5, 0.5);
+      });
 
-    // restore previous backend
-    tf.setBackend(prevBackend);
+      const indexes = indexTensor.dataSync() as Float32Array;
+      indexTensor.dispose();
 
-    return this.buildDetectedObjects(
-        width, height, boxes, maxScores, indexes, classes);
-  }
+      // restore previous backend
+      tf.setBackend(prevBackend);
+
+      return this.buildDetectedObjects(
+          width, height, boxes, maxScores, indexes, classes);
+    }
 
   private buildDetectedObjects(
-      width: number, height: number, boxes: Float32Array, scores: number[],
-      indexes: Float32Array, classes: number[]): DetectedObject[] {
-    const count = indexes.length;
-    const objects: DetectedObject[] = [];
-    for (let i = 0; i < count; i++) {
-      const bbox = [];
-      for (let j = 0; j < 4; j++) {
-        bbox[j] = boxes[indexes[i] * 4 + j];
+      width: number,
+      height: number,
+      boxes: Float32Array,
+      scores: number[],
+      indexes: Float32Array,
+      classes: number[]
+    ): DetectedObject[] {
+      const count = indexes.length;
+      const objects: DetectedObject[] = [];
+
+      for (let i = 0; i < count; i++) {
+        const bbox = [];
+        for (let j = 0; j < 4; j++) {
+          bbox[j] = boxes[indexes[i] * 4 + j];
+        }
+        const minY = bbox[0] * height;
+        const minX = bbox[1] * width;
+        const maxY = bbox[2] * height;
+        const maxX = bbox[3] * width;
+        bbox[0] = minX;
+        bbox[1] = minY;
+        bbox[2] = maxX - minX;
+        bbox[3] = maxY - minY;
+        objects.push({
+          bbox: bbox as [number, number, number, number],
+          class: CLASSES[classes[indexes[i]] + 1].displayName,
+          score: scores[indexes[i]]
+        });
       }
-      const minY = bbox[0] * height;
-      const minX = bbox[1] * width;
-      const maxY = bbox[2] * height;
-      const maxX = bbox[3] * width;
-      bbox[0] = minX;
-      bbox[1] = minY;
-      bbox[2] = maxX - minX;
-      bbox[3] = maxY - minY;
-      objects.push({
-        bbox: bbox as [number, number, number, number],
-        class: CLASSES[classes[indexes[i]] + 1].displayName,
-        score: scores[indexes[i]]
-      });
+      return objects;
     }
-    return objects;
-  }
 
   private calculateMaxScores(
-      scores: Float32Array, numBoxes: number,
-      numClasses: number): [number[], number[]] {
-    const maxes = [];
-    const classes = [];
-    for (let i = 0; i < numBoxes; i++) {
-      let max = Number.MIN_VALUE;
-      let index = -1;
-      for (let j = 0; j < numClasses; j++) {
-        if (scores[i * numClasses + j] > max) {
-          max = scores[i * numClasses + j];
-          index = j;
+      scores: Float32Array,
+      numBoxes: number,
+      numClasses: number
+    ): [number[], number[]] {
+      const maxes = [];
+      const classes = [];
+
+      for (let i = 0; i < numBoxes; i++) {
+        let max = Number.MIN_VALUE;
+        let index = -1;
+        for (let j = 0; j < numClasses; j++) {
+          if (scores[i * numClasses + j] > max) {
+            max = scores[i * numClasses + j];
+            index = j;
+          }
         }
+        maxes[i] = max;
+        classes[i] = index;
       }
-      maxes[i] = max;
-      classes[i] = index;
+      return [maxes, classes];
     }
-    return [maxes, classes];
-  }
 
   /**
    * Detect objects for an image returning a list of bounding boxes with
@@ -181,9 +184,9 @@ export class ObjectDetection {
    *
    */
   async detect(
-      img: tf.Tensor3D|ImageData|HTMLImageElement|HTMLCanvasElement|
-      HTMLVideoElement,
-      maxNumBoxes = 20): Promise<DetectedObject[]> {
+      img: tf.Tensor3D|ImageData|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement,
+      maxNumBoxes = 20
+    ): Promise<DetectedObject[]> {
     return this.infer(img, maxNumBoxes);
   }
 
