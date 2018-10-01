@@ -52,7 +52,7 @@ image.src = imageURL
 const runButton = document.getElementById('run')
 runButton.onclick = async () => {
   const model = await modelPromise
-  const result = await model.infer(image)
+  const result = await model.detect(image)
 
   const c = document.getElementById('canvas')
   const context = c.getContext('2d')
