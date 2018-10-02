@@ -62,7 +62,7 @@ export class ObjectDetection {
    * objects. There can be multiple objects of the same class, but at different
    * locations. Defaults to 20.
    */
-  async infer(
+  async detect(
       img: tf.Tensor3D|ImageData|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement,
       maxNumBoxes: number = 20
     ): Promise<DetectedObject[]> {
