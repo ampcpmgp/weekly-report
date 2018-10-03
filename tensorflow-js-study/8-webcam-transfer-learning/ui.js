@@ -38,6 +38,7 @@ export const getEpochs = () => +epochsElement.value
 
 const denseUnitsElement = document.getElementById('dense-units')
 export const getDenseUnits = () => +denseUnitsElement.value
+
 const statusElement = document.getElementById('status')
 
 export function startPacman () {
@@ -63,7 +64,6 @@ export let addExampleHandler
 export function setExampleHandler (handler) {
   addExampleHandler = handler
 }
-let mouseDown = false
 const totals = [0, 0, 0, 0]
 
 const upButton = document.getElementById('up')
@@ -74,31 +74,21 @@ const rightButton = document.getElementById('right')
 const thumbDisplayed = {}
 
 async function handler (label) {
-  mouseDown = true
   const className = CONTROLS[label]
   const total = document.getElementById(className + '-total')
-  while (true) {
-    if (!mouseDown) break
 
-    addExampleHandler(label)
-    document.body.setAttribute('data-active', CONTROLS[label])
-    total.innerText = totals[label]++
-    await tf.nextFrame()
-  }
+  addExampleHandler(label)
+  document.body.setAttribute('data-active', CONTROLS[label])
+  total.innerText = ++totals[label]
+  await tf.nextFrame()
+
   document.body.removeAttribute('data-active')
 }
 
 upButton.addEventListener('mousedown', () => handler(0))
-upButton.addEventListener('mouseup', () => (mouseDown = false))
-
 downButton.addEventListener('mousedown', () => handler(1))
-downButton.addEventListener('mouseup', () => (mouseDown = false))
-
 leftButton.addEventListener('mousedown', () => handler(2))
-leftButton.addEventListener('mouseup', () => (mouseDown = false))
-
 rightButton.addEventListener('mousedown', () => handler(3))
-rightButton.addEventListener('mouseup', () => (mouseDown = false))
 
 export function drawThumb (img, label) {
   if (thumbDisplayed[label] == null) {
