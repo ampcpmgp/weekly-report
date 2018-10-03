@@ -34,7 +34,8 @@
       "git add"
     ],
     "ignore": [
-      "**/lib/*.js"
+      "**/lib/*.js",
+      "**/public/*.js"
     ]
   }
 }
