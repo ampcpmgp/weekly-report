@@ -41,11 +41,11 @@ export const getDenseUnits = () => +denseUnitsElement.value
 const statusElement = document.getElementById('status')
 
 export function startPacman () {
-  google.pacman.startGameplay()
+  window.google.pacman.startGameplay()
 }
 
 export function predictClass (classId) {
-  google.pacman.keyPressed(CONTROL_CODES[classId])
+  window.google.pacman.keyPressed(CONTROL_CODES[classId])
   document.body.setAttribute('data-active', CONTROLS[classId])
 }
 
@@ -76,9 +76,10 @@ const thumbDisplayed = {}
 async function handler (label) {
   mouseDown = true
   const className = CONTROLS[label]
-  const button = document.getElementById(className)
   const total = document.getElementById(className + '-total')
-  while (mouseDown) {
+  while (true) {
+    if (!mouseDown) break
+
     addExampleHandler(label)
     document.body.setAttribute('data-active', CONTROLS[label])
     total.innerText = totals[label]++
@@ -88,16 +89,16 @@ async function handler (label) {
 }
 
 upButton.addEventListener('mousedown', () => handler(0))
-upButton.addEventListener('mouseup', () => mouseDown = false)
+upButton.addEventListener('mouseup', () => (mouseDown = false))
 
 downButton.addEventListener('mousedown', () => handler(1))
-downButton.addEventListener('mouseup', () => mouseDown = false)
+downButton.addEventListener('mouseup', () => (mouseDown = false))
 
 leftButton.addEventListener('mousedown', () => handler(2))
-leftButton.addEventListener('mouseup', () => mouseDown = false)
+leftButton.addEventListener('mouseup', () => (mouseDown = false))
 
 rightButton.addEventListener('mousedown', () => handler(3))
-rightButton.addEventListener('mouseup', () => mouseDown = false)
+rightButton.addEventListener('mouseup', () => (mouseDown = false))
 
 export function drawThumb (img, label) {
   if (thumbDisplayed[label] == null) {
@@ -109,7 +110,7 @@ export function drawThumb (img, label) {
 export function draw (image, canvas) {
   const [width, height] = [224, 224]
   const ctx = canvas.getContext('2d')
-  const imageData = new ImageData(width, height)
+  const imageData = new window.ImageData(width, height)
   const data = image.dataSync()
   for (let i = 0; i < height * width; ++i) {
     const j = i * 4
