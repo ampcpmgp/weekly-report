@@ -16,8 +16,7 @@
  */
 
 // TODO(ping): Switch to package import when the npm is published.
-import * as objectDetection from './src'
-
+import * as cocoSsd from '@tensorflow-models/coco-ssd'
 import imageURL from './image1.jpg'
 import image2URL from './image2.jpg'
 
@@ -30,7 +29,7 @@ if (module.hot) {
 let modelPromise
 
 window.onload = () => {
-  modelPromise = objectDetection.load()
+  modelPromise = cocoSsd.load()
 }
 
 const button = document.getElementById('toggle')
@@ -42,7 +41,7 @@ const select = document.getElementById('base_model')
 select.onchange = async (event) => {
   const model = await modelPromise
   model.dispose()
-  modelPromise = objectDetection.load(
+  modelPromise = cocoSsd.load(
     event.srcElement.options[event.srcElement.selectedIndex].value)
 }
 
