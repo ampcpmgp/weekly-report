@@ -1,14 +1,7 @@
-import './parts/header'
-
 <app-root>
   <parts-header></parts-header>
-  <h2>{title}</h2>
-  <div>
-    {clickCount}
-  </div>
-  <div>
-    API: {apiData}
-  </div>
+  <video ref="video" autoplay="true"></video>
+
   <style type="less">
     :scope {
       display: flex;

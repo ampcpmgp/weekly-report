@@ -19,7 +19,6 @@
   "license": "ISC",
   "devDependencies": {
     "am-mocktimes": "^1.4.0",
-    "axios-mock-adapter": "^1.15.0",
     "cross-env": "^5.1.6",
     "husky": "^0.14.3",
     "less": "^3.0.4",
@@ -49,7 +48,7 @@
     "singleQuote": true
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "@tensorflow-models/coco-ssd": "^0.1.0",
     "babel-polyfill": "^6.26.0",
     "dob": "^2.5.8",
     "normalize.css": "^8.0.0",
