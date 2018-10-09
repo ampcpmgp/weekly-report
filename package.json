@@ -28,13 +28,16 @@
     "singleQuote": true
   },
   "lint-staged": {
-    "**/*.js": [
-      "prettier --write",
-      "standard --fix",
-      "git add"
-    ],
+    "linters": {
+      "*.js": [
+        "prettier --write",
+        "standard --fix",
+        "git add"
+      ]
+    },
     "ignore": [
-      "**/lib/*.js"
+      "**/lib/*.js",
+      "**/public/*.js"
     ]
   }
 }
