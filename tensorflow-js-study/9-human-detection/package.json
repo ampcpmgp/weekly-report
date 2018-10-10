@@ -9,7 +9,7 @@
     "dist-dev": "run-s dist-dev:*",
     "dist:clean": "rimraf dist",
     "dist-dev:clean": "rimraf dist-no-minified",
-    "dist:build": "parcel build src/index.html",
+    "dist:build": "parcel build src/index.html --out-dir=public --public-url=./",
     "dist-dev:build": "parcel build src/index.html --out-dir=dist-no-minified --no-minify",
     "lint": "standard --verbose | snazzy",
     "precommit": "lint-staged",
