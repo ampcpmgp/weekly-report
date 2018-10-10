@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "@tensorflow-models/coco-ssd": "^0.1.0",
+    "@tensorflow/tfjs": "^0.13.1",
     "babel-polyfill": "^6.26.0",
     "dob": "^2.5.8",
     "normalize.css": "^8.0.0",

@@ -1,20 +1,34 @@
 <app-root>
-  <parts-header></parts-header>
   <video ref="video" autoplay="true"></video>
+  <section>
+    <img src="{image}">
+    <div
+      class="box"
+      each="{result}"
+      style="
+        left: {bbox[0]}px;
+        top: {bbox[1]}px;
+        width: {bbox[2]}px;
+        height: {bbox[3]}px;
+      "
+      >
+      {class}: {score}
+    </div>
+  </section>
 
   <style type="less">
     :scope {
       display: flex;
-      flex-direction: column;
-      border: 1px solid;
     }
 
-    > img {
-      width: 200px;
-    }
+    > section {
+      position: relative;
 
-    > h2 {
-      color: blue;
+      > .box {
+        color: white;
+        position: absolute;
+        border: solid 1px yellow;
+      }
     }
   </style>
   <script>
