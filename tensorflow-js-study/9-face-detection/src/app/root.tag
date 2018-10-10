@@ -14,6 +14,7 @@
       <div
         class="box"
         each="{result}"
+        onclick="{() => captureImage(bbox)}"
         style="
           left: {bbox[0]}px;
           top: {bbox[1]}px;
@@ -25,6 +26,7 @@
       </div>
     </section>
   </section>
+  <canvas ref="captured"></canvas>
 
   <style type="less">
     >section.capture {
@@ -36,7 +38,12 @@
         > .box {
           color: white;
           position: absolute;
-          border: solid 1px yellow;
+          border: solid 1px rgba(255, 255, 0, 0.6);
+          cursor: pointer;
+
+          &:hover {
+            border: solid 2px rgba(255, 255, 0, 1);
+          }
         }
       }
     }

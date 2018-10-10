@@ -13,6 +13,22 @@ export default {
   fps: 0,
   canvas: document.createElement('canvas'),
 
+  drawCapturedImage (width, height, imageData) {
+    const context = this.refs.captured.getContext('2d')
+    this.refs.captured.width = width
+    this.refs.captured.height = height
+
+    context.putImageData(imageData, 0, 0)
+  },
+
+  captureImage (bbox) {
+    const [x, y, width, height] = bbox
+    const context = this.canvas.getContext('2d')
+    const imageData = context.getImageData(x, y, width, height)
+
+    this.drawCapturedImage(width, height, imageData)
+  },
+
   async analyze () {
     const context = this.canvas.getContext('2d')
     const width = this.canvas.width
