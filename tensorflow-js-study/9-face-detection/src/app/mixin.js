@@ -1,4 +1,5 @@
 import * as cocoSsd from '@tensorflow-models/coco-ssd'
+import * as tf from '@tensorflow/tfjs'
 import sleep from '../util/sleep'
 
 export default {
@@ -19,6 +20,11 @@ export default {
     this.refs.captured.height = height
 
     context.putImageData(imageData, 0, 0)
+
+    const imageTensor = tf.fromPixels(imageData)
+
+    // TODO: 転移学習をしたい
+    console.log(imageTensor)
   },
 
   captureImage (bbox) {
