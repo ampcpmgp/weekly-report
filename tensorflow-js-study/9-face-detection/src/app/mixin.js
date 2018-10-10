@@ -3,7 +3,10 @@ import sleep from '../util/sleep'
 
 export default {
   status: '',
-  model: null,
+  model: {
+    mobilenet_v2: null,
+    lite_mobilenet_v2: null
+  },
   image: '',
   result: [],
   isValid: true,
@@ -21,7 +24,7 @@ export default {
     const now = Date.now()
 
     this.update({
-      result: await this.model.detect(imageData),
+      result: await this.model[this.refs.modelName.value].detect(imageData),
       image: this.canvas.toDataURL()
     })
 
@@ -37,9 +40,6 @@ export default {
   },
 
   async init () {
-    // mobilenet_v1 or mobilenet_v2 or lite_mobilenet_v2
-    const modelPromise = cocoSsd.load('lite_mobilenet_v2')
-
     this.on('mount', async () => {
       const videoPromise = navigator.mediaDevices.getUserMedia({ video: true })
       const mediaStream = await videoPromise
@@ -47,7 +47,9 @@ export default {
       this.refs.video.srcObject = mediaStream
 
       this.update({ status: 'model loading...' })
-      this.model = await modelPromise
+      // mobilenet_v1 or mobilenet_v2 or lite_mobilenet_v2
+      this.model.lite_mobilenet_v2 = await cocoSsd.load('lite_mobilenet_v2')
+      this.model.mobilenet_v2 = await cocoSsd.load('mobilenet_v2')
       this.update({ status: '' })
 
       const width = this.refs.video.videoWidth
