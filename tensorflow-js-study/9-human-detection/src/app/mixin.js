@@ -80,7 +80,8 @@ export default {
 
     const imageData = this.drawSelectedRectangle()
 
-    console.log(tf.toPixels(imageData))
+    // TODO: 選択された矩形を再学習させたい
+    console.log(tf.fromPixels(imageData))
   },
 
   drawSelectedRectangle () {
