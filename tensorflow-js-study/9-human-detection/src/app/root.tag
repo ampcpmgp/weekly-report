@@ -53,6 +53,7 @@
 
       > video {
         cursor: pointer;
+        max-width: 50%;
       }
 
       > section {
