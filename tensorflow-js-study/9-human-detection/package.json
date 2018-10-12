@@ -6,11 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dist": "run-s dist:*",
-    "dist-dev": "run-s dist-dev:*",
-    "dist:clean": "rimraf dist",
-    "dist-dev:clean": "rimraf dist-no-minified",
+    "dist:clean": "rimraf public",
     "dist:build": "parcel build src/index.html --out-dir=public --public-url=./",
-    "dist-dev:build": "parcel build src/index.html --out-dir=dist-no-minified --no-minify",
     "lint": "standard --verbose | snazzy",
     "precommit": "lint-staged",
     "start": "am-mocktimes watch"
