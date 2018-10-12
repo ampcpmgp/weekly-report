@@ -135,7 +135,7 @@ export default {
 
   async analyze () {
     if (this.isMounseEnter) {
-      await sleep(1000) // 描画させてから実行
+      await sleep(1000)
       this.analyze()
       return
     }
