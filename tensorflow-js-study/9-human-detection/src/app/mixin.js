@@ -1,8 +1,11 @@
 import * as cocoSsd from '@tensorflow-models/coco-ssd'
 import * as tf from '@tensorflow/tfjs'
+import selectedRectangle, * as selectedRectangleAction from '../state/selected-rectangle'
 import sleep from '../util/sleep'
 
 export default {
+  selectedRectangle,
+  selectedRectangleAction,
   status: '',
   model: {
     mobilenet_v2: null,
@@ -12,17 +15,8 @@ export default {
   result: [],
   isValid: true,
   fps: 0,
-  selectedX: 0,
-  selectedY: 0,
   isDraggable: false,
   isMounseEnter: false,
-  selectedRectangle: {
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-    image: ''
-  },
   canvas: document.createElement('canvas'),
 
   mouseEnter () {
@@ -40,10 +34,10 @@ export default {
 
     this.isDraggable = true
 
-    this.selectedRectangle.x = x
-    this.selectedRectangle.y = y
-    this.selectedRectangle.width = 0
-    this.selectedRectangle.height = 0
+    selectedRectangleAction.setBaseX(x)
+    selectedRectangleAction.setBaseY(y)
+    selectedRectangleAction.setDifferenceWidth(0)
+    selectedRectangleAction.setDifferenceHeight(0)
 
     this.update()
   },
@@ -55,22 +49,11 @@ export default {
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
 
-    const differenceWidth = x - this.selectedRectangle.x
-    const differenceHeight = y - this.selectedRectangle.y
+    const differenceWidth = x - selectedRectangle.baseX
+    const differenceHeight = y - selectedRectangle.baseY
 
-    if (differenceWidth < 0) {
-      this.selectedRectangle.x = x
-      this.selectedRectangle.width += Math.abs(differenceWidth)
-    } else {
-      this.selectedRectangle.width = Math.abs(differenceWidth)
-    }
-
-    if (differenceHeight < 0) {
-      this.selectedRectangle.y = y
-      this.selectedRectangle.height += Math.abs(differenceHeight)
-    } else {
-      this.selectedRectangle.height = Math.abs(differenceHeight)
-    }
+    selectedRectangleAction.setDifferenceWidth(differenceWidth)
+    selectedRectangleAction.setDifferenceHeight(differenceHeight)
 
     this.update()
   },
@@ -85,7 +68,11 @@ export default {
   },
 
   drawSelectedRectangle () {
-    const { x, y, width, height } = this.selectedRectangle
+    const width = selectedRectangleAction.getWidth()
+    const height = selectedRectangleAction.getHeight()
+    const x = selectedRectangleAction.getX()
+    const y = selectedRectangleAction.getY()
+
     this.refs.selectedRectangleImage.width = width
     this.refs.selectedRectangleImage.height = height
 

@@ -29,10 +29,10 @@
     <div
       class="rectangle"
       style="
-        left: {selectedRectangle.x}px;
-        top: {selectedRectangle.y}px;
-        width: {selectedRectangle.width}px;
-        height: {selectedRectangle.height}px;
+        left: {selectedRectangleAction.getX()}px;
+        top: {selectedRectangleAction.getY()}px;
+        width: {selectedRectangleAction.getWidth()}px;
+        height: {selectedRectangleAction.getHeight()}px;
       ">
     </div>
     <canvas
