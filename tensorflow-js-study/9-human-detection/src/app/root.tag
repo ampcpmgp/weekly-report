@@ -49,10 +49,7 @@
   <style type="less">
     > section.capture {
       display: flex;
-
-      > * {
-        width: 50%;
-      }
+      align-items: flex-start;
 
       > video {
         cursor: pointer;
@@ -62,10 +59,10 @@
         position: relative;
 
         > img {
-          position: absolute;
+          position: relative;
           top: 0;
           left: 0;
-          width: 100%;
+          max-width: 100%;
         }
 
         > .box {
