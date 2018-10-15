@@ -50,11 +50,10 @@ export default {
     this.update({ status: 'model loading...', fps: '' })
 
     // mobilenet_v1 or mobilenet_v2 or lite_mobilenet_v2
-    this.model[modelName] = await cocoSsd.load(modelName)
+    const model = await cocoSsd.load(modelName)
+    this.model[modelName] = model
 
     this.update({ status: '' })
-
-    // const newModel =
   },
 
   moveRectanglePoint (e) {
