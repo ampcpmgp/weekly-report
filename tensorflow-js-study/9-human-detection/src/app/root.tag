@@ -2,7 +2,7 @@
   <header>
     <span if="{status}">{status}</span>
     <span if="{fps}">{fps}fps</span>
-    <select ref="modelName">
+    <select ref="modelName" onchange="{loadModel}">
       <option value="lite_mobilenet_v2" selected>lite_mobilenet_v2</option>
       <option value="mobilenet_v2">mobilenet_v2</option>
     </select>
