@@ -42,6 +42,20 @@ export default {
     this.update()
   },
 
+  async loadModel (e) {
+    const modelName = this.refs.modelName.value
+
+    if (this.model[modelName]) return
+
+    this.update({ status: 'model loading...', fps: '' })
+
+    // mobilenet_v1 or mobilenet_v2 or lite_mobilenet_v2
+    const model = await cocoSsd.load(modelName)
+    this.model[modelName] = model
+
+    this.update({ status: '' })
+  },
+
   moveRectanglePoint (e) {
     if (!this.isDraggable) return
 
@@ -134,15 +148,20 @@ export default {
   },
 
   async analyze () {
-    if (this.isMounseEnter) {
-      await sleep(1000)
+    const width = this.refs.video.videoWidth
+    const height = this.refs.video.videoHeight
+    const targetModel = this.model[this.refs.modelName.value]
+
+    if (this.isMounseEnter || !targetModel || !width || !height) {
+      await sleep(250)
       this.analyze()
       return
     }
 
+    this.canvas.width = width
+    this.canvas.height = height
+
     const context = this.canvas.getContext('2d')
-    const width = this.canvas.width
-    const height = this.canvas.height
 
     context.drawImage(this.refs.video, 0, 0, width, height)
 
@@ -150,7 +169,7 @@ export default {
     const now = Date.now()
 
     this.update({
-      result: await this.model[this.refs.modelName.value].detect(imageData),
+      result: await targetModel.detect(imageData),
       image: this.canvas.toDataURL()
     })
 
@@ -172,17 +191,8 @@ export default {
 
       this.refs.video.srcObject = mediaStream
 
-      this.update({ status: 'model loading...' })
-      // mobilenet_v1 or mobilenet_v2 or lite_mobilenet_v2
-      this.model.lite_mobilenet_v2 = await cocoSsd.load('lite_mobilenet_v2')
-      this.model.mobilenet_v2 = await cocoSsd.load('mobilenet_v2')
-      this.update({ status: '' })
-
-      const width = this.refs.video.videoWidth
-      const height = this.refs.video.videoHeight
-
-      this.canvas.width = width
-      this.canvas.height = height
+      const event = new window.Event('change')
+      this.refs.modelName.dispatchEvent(event)
 
       this.analyze()
     })
