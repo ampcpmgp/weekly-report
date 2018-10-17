@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "parcel --no-hmr --open index.html ",
-    "build": "parcel build index.html  --no-minify --public-url ./",
+    "build": "parcel build index.html -d public --no-minify --public-url ./",
     "lint": "eslint .",
     "link-local": "yalc link @tensorflow-models/knn-classifier"
   },
