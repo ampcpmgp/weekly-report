@@ -22,18 +22,18 @@ export async function plotData (container, xs, ys) {
   const yvals = await ys.data()
 
   const values = Array.from(yvals).map((y, i) => {
-    return { 'x': xvals[i], 'y': yvals[i] }
+    return { x: xvals[i], y: yvals[i] }
   })
 
   const spec = {
-    '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
-    'width': 300,
-    'height': 300,
-    'data': { 'values': values },
-    'mark': 'point',
-    'encoding': {
-      'x': { 'field': 'x', 'type': 'quantitative' },
-      'y': { 'field': 'y', 'type': 'quantitative' }
+    $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+    width: 300,
+    height: 300,
+    data: { values: values },
+    mark: 'point',
+    encoding: {
+      x: { field: 'x', type: 'quantitative' },
+      y: { field: 'y', type: 'quantitative' }
     }
   }
 
@@ -46,28 +46,28 @@ export async function plotDataAndPredictions (container, xs, ys, preds) {
   const predVals = await preds.data()
 
   const values = Array.from(yvals).map((y, i) => {
-    return { 'x': xvals[i], 'y': yvals[i], pred: predVals[i] }
+    return { x: xvals[i], y: yvals[i], pred: predVals[i] }
   })
 
   const spec = {
-    '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
-    'width': 300,
-    'height': 300,
-    'data': { 'values': values },
-    'layer': [
+    $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+    width: 300,
+    height: 300,
+    data: { values: values },
+    layer: [
       {
-        'mark': 'point',
-        'encoding': {
-          'x': { 'field': 'x', 'type': 'quantitative' },
-          'y': { 'field': 'y', 'type': 'quantitative' }
+        mark: 'point',
+        encoding: {
+          x: { field: 'x', type: 'quantitative' },
+          y: { field: 'y', type: 'quantitative' }
         }
       },
       {
-        'mark': 'line',
-        'encoding': {
-          'x': { 'field': 'x', 'type': 'quantitative' },
-          'y': { 'field': 'pred', 'type': 'quantitative' },
-          'color': { 'value': 'tomato' }
+        mark: 'line',
+        encoding: {
+          x: { field: 'x', type: 'quantitative' },
+          y: { field: 'pred', type: 'quantitative' },
+          color: { value: 'tomato' }
         }
       }
     ]
@@ -77,7 +77,9 @@ export async function plotDataAndPredictions (container, xs, ys, preds) {
 }
 
 export function renderCoefficients (container, coeff) {
-  document.querySelector(container).innerHTML =
-    `<span>a=${coeff.a.toFixed(3)}, b=${coeff.b.toFixed(3)}, c=${
-      coeff.c.toFixed(3)},  d=${coeff.d.toFixed(3)}</span>`
+  document.querySelector(container).innerHTML = `<span>a=${coeff.a.toFixed(
+    3
+  )}, b=${coeff.b.toFixed(3)}, c=${coeff.c.toFixed(3)},  d=${coeff.d.toFixed(
+    3
+  )}</span>`
 }

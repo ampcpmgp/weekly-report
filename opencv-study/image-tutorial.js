@@ -6,9 +6,13 @@ cv['onRuntimeInitialized'] = () => {
   let inputElement = document.getElementById('fileInput')
   let imgElement = document.getElementById('imageSrc')
 
-  inputElement.addEventListener('change', (e) => {
-    imgElement.src = URL.createObjectURL(e.target.files[0])
-  }, false)
+  inputElement.addEventListener(
+    'change',
+    e => {
+      imgElement.src = URL.createObjectURL(e.target.files[0])
+    },
+    false
+  )
 
   imgElement.onload = function () {
     const mat = cv.imread(imgElement)

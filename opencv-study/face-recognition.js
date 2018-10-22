@@ -6,7 +6,14 @@ var Utils = window.Utils
 var persons = {}
 //! [Run face detection model]
 function detectFaces (img) {
-  var blob = cv.blobFromImage(img, 1, {width: 128, height: 96}, [104, 177, 123, 0], false, false)
+  var blob = cv.blobFromImage(
+    img,
+    1,
+    { width: 128, height: 96 },
+    [104, 177, 123, 0],
+    false,
+    false
+  )
   netDet.setInput(blob)
   var out = netDet.forward()
   var faces = []
@@ -21,22 +28,29 @@ function detectFaces (img) {
     bottom = Math.min(Math.max(0, bottom), img.rows - 1)
     top = Math.min(Math.max(0, top), img.rows - 1)
     if (confidence > 0.5 && left < right && top < bottom) {
-      faces.push({x: left, y: top, width: right - left, height: bottom - top})
+      faces.push({ x: left, y: top, width: right - left, height: bottom - top })
     }
   }
   blob.delete()
   out.delete()
   return faces
-};
+}
 //! [Run face detection model]
 //! [Get 128 floating points feature vector]
 function face2vec (face) {
-  var blob = cv.blobFromImage(face, 1.0 / 255, {width: 96, height: 96}, [0, 0, 0, 0], true, false)
+  var blob = cv.blobFromImage(
+    face,
+    1.0 / 255,
+    { width: 96, height: 96 },
+    [0, 0, 0, 0],
+    true,
+    false
+  )
   netRecogn.setInput(blob)
   var vec = netRecogn.forward()
   blob.delete()
   return vec
-};
+}
 //! [Get 128 floating points feature vector]
 //! [Recognize]
 function recognize (face) {
@@ -53,7 +67,7 @@ function recognize (face) {
   }
   vec.delete()
   return bestMatchName
-};
+}
 //! [Recognize]
 function loadModels (callback) {
   var utils = new Utils('')
@@ -61,18 +75,22 @@ function loadModels (callback) {
   var weights = './data/res10_300x300_ssd_iter_140000_fp16.caffemodel'
   var recognModel = './data/openface.nn4.small2.v1.t7'
   utils.createFileFromUrl('face_detector.prototxt', proto, () => {
-    document.getElementById('status').innerHTML = 'Downloading face_detector.caffemodel'
+    document.getElementById('status').innerHTML =
+      'Downloading face_detector.caffemodel'
     utils.createFileFromUrl('face_detector.caffemodel', weights, () => {
       document.getElementById('status').innerHTML = 'Downloading OpenFace model'
       utils.createFileFromUrl('face_recognition.t7', recognModel, () => {
         document.getElementById('status').innerHTML = ''
-        netDet = cv.readNetFromCaffe('face_detector.prototxt', 'face_detector.caffemodel')
+        netDet = cv.readNetFromCaffe(
+          'face_detector.prototxt',
+          'face_detector.caffemodel'
+        )
         netRecogn = cv.readNetFromTorch('face_recognition.t7')
         callback()
       })
     })
   })
-};
+}
 function main () {
   // Create a camera object.
   var output = document.getElementById('output')
@@ -80,7 +98,8 @@ function main () {
   camera.setAttribute('width', output.width)
   camera.setAttribute('height', output.height)
   // Get a permission from user to use a camera.
-  navigator.mediaDevices.getUserMedia({video: true, audio: false})
+  navigator.mediaDevices
+    .getUserMedia({ video: true, audio: false })
     .then(function (stream) {
       camera.srcObject = stream
       camera.onloadedmetadata = function (e) {
@@ -107,7 +126,10 @@ function main () {
       var cell2 = document.getElementById('targetImgs').insertCell(0)
       cell2.appendChild(canvas)
       var faceResized = new cv.Mat(canvas.height, canvas.width, cv.CV_8UC3)
-      cv.resize(face, faceResized, {width: canvas.width, height: canvas.height})
+      cv.resize(face, faceResized, {
+        width: canvas.width,
+        height: canvas.height
+      })
       cv.cvtColor(faceResized, faceResized, cv.COLOR_BGR2RGB)
       cv.imshow(canvas, faceResized)
       faceResized.delete()
@@ -123,10 +145,22 @@ function main () {
     cv.cvtColor(frame, frameBGR, cv.COLOR_RGBA2BGR)
     var faces = detectFaces(frameBGR)
     faces.forEach(function (rect) {
-      cv.rectangle(frame, {x: rect.x, y: rect.y}, {x: rect.x + rect.width, y: rect.y + rect.height}, [0, 255, 0, 255])
+      cv.rectangle(
+        frame,
+        { x: rect.x, y: rect.y },
+        { x: rect.x + rect.width, y: rect.y + rect.height },
+        [0, 255, 0, 255]
+      )
       var face = frameBGR.roi(rect)
       var name = recognize(face)
-      cv.putText(frame, name, {x: rect.x, y: rect.y}, cv.FONT_HERSHEY_SIMPLEX, 1.0, [0, 255, 0, 255])
+      cv.putText(
+        frame,
+        name,
+        { x: rect.x, y: rect.y },
+        cv.FONT_HERSHEY_SIMPLEX,
+        1.0,
+        [0, 255, 0, 255]
+      )
     })
     cv.imshow(output, frame)
     // Loop this function.
@@ -134,7 +168,7 @@ function main () {
       var delay = 1000 / FPS - (Date.now() - begin)
       setTimeout(captureFrame, delay)
     }
-  };
+  }
   //! [Define frames processing]
   document.getElementById('startStopButton').onclick = function toggle () {
     if (isRunning) {
@@ -159,7 +193,7 @@ function main () {
     }
   }
   document.getElementById('startStopButton').disabled = false
-};
+}
 
 cv['onRuntimeInitialized'] = () => {
   main()
