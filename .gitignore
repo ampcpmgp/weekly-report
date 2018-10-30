@@ -4,3 +4,4 @@ node_modules
 dist
 build
 open-ai-gym-study/breakout/reinforcement-learning-with-tensorflow
+other-git--*
