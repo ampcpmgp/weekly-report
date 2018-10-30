@@ -10,7 +10,7 @@ async function sleep (ms) {
 
 async function start () {
   const response = await axios.post('http://127.0.0.1:5000/v1/envs/', {
-    env_id: 'CartPole-v0'
+    env_id: 'Breakout-v0' // CartPole-v0 or Breakout-v0
   })
 
   const response1 = await axios.get('http://127.0.0.1:5000/v1/envs/')
@@ -30,26 +30,29 @@ async function start () {
     }
   )
 
-  console.log(3)
-
   // test用
   // await axios.post(`http://127.0.0.1:5000/v1/envs/${response.data.instance_id}/auto_step/`)
   // return
 
   const episodeCount = 100 // 100
-  const maxSteps = 200 // 200
+  const maxSteps = 20000
 
   for (let index = 0; index < episodeCount; index++) {
-    const response3 = await axios.post(
+    await axios.post(
       `http://127.0.0.1:5000/v1/envs/${response.data.instance_id}/reset/`
     )
-
-    console.log(4, response3.data)
 
     for (let index2 = 0; index2 < maxSteps; index2++) {
       await sleep(0)
 
-      const action = Math.floor(Math.random() * 2)
+      const response4 = await axios.get(
+        `http://127.0.0.1:5000/v1/envs/${
+          response.data.instance_id
+        }/action_space/sample`
+      )
+
+      const action = response4.data.action
+
       const response5 = await axios.post(
         `http://127.0.0.1:5000/v1/envs/${response.data.instance_id}/step/`,
         {
@@ -58,8 +61,9 @@ async function start () {
         }
       )
 
-      console.log(6, action, response5.data)
       if (response5.data.done) break
+
+      // todo: maxSteps を超えた場合は 終了 (done) するまで待つ
     }
   }
 
