@@ -15,7 +15,7 @@ git clone https://github.com/lechatthecat/reinforcement-learning-with-tensorflow
 cd other-git--reinforcement-learning-with-tensorflow/DQN
 
 wsl
-pip3 install pandas
+pip3 install pandas tensorflow matplotlib
 sudo apt-get install python3-tk
 python3 dqn.py
 ```
