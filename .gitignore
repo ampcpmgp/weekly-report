@@ -4,3 +4,4 @@ node_modules
 dist
 build
 other-git--*
+open-ai-gym-study/breakout/breakout_model
