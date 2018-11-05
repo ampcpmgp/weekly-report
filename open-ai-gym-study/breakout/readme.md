@@ -24,3 +24,9 @@ pip3 install pandas tensorflow matplotlib
 sudo apt-get install python3-tk
 python3 dqn.py
 ```
+
+## Sample 3 (Ape-X)
+
+```shell
+python3 apex_atari.py
+```
