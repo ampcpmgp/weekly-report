@@ -21,7 +21,7 @@ import threading
 ENV_NAME = 'Breakout-v0'  # Environment name
 TRAIN = True
 LOAD_NETWORK = False
-SAVE_NETWORK_PATH = 'saved_networks/' + ENV_NAME
+SAVE_NETWORK_PATH = '.ignore--saved_networks/' + ENV_NAME
 
 NUM_ACTORS = 1
 NUM_EPISODES = 12000  # Number of episodes the agent plays
@@ -301,7 +301,7 @@ class Learner:
                 text_l = 'AVERAGE LOSS: {0:.5F} / AVG_MAX_Q: {1:2.4F} / LEARN PER SECOND: {2:.1F} / NUM LEARN: {3:5d}'.format(
                     self.total_loss/PRINT_INTERVAL, self.total_q_max/(PRINT_INTERVAL*BATCH_SIZE), PRINT_INTERVAL/self.total_time, self.t)
                 print(text_l)
-                with open(ENV_NAME+'_output.txt','a') as f:
+                with open('.ignore--'+ENV_NAME+'_output.txt','a') as f:
                     f.write(text_l+"\n")
                 self.total_loss = 0
                 self.total_time = 0

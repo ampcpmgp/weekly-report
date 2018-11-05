@@ -3,10 +3,10 @@
 node_modules
 dist
 build
+
+# custom
 other-git--*
+.ignore--*
 
 # models
-open-ai-gym-study/breakout/breakout_model
-open-ai-gym-study/breakout/Breakout-v0_output*
-
 open-ai-gym-study/breakout/saved_networks
