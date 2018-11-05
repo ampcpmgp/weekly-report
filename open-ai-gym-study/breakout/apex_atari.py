@@ -576,7 +576,7 @@ class Actor:
                 print(text)
 
 
-                with open(ENV_NAME+'_output.txt','a') as f:
+                with open('.ignore--'+ENV_NAME+'_output.txt','a') as f:
                     f.write(text+"\n")
 
                 self.total_reward = 0
