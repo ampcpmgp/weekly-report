@@ -150,9 +150,6 @@ class Learner:
         # Define loss and gradient update operation
         self.a, self.y, self.error, self.loss, self.grad_update, self.gv, self.cl = self.build_training_op(q_network_weights)
 
-
-
-
         if not os.path.exists(SAVE_NETWORK_PATH):
             os.makedirs(SAVE_NETWORK_PATH)
 
@@ -187,8 +184,14 @@ class Learner:
         adv = Dense(512, activation='relu', name="dense_adv1")(fltn)
         adv = Dense(self.num_actions, name="dense_adv2")(adv)
         y = concatenate([v,adv])
-        l_output = Lambda(lambda a: K.expand_dims(a[:, 0], -1) + a[:, 1:] - tf.stop_gradient(K.mean(a[:,1:],keepdims=True)), output_shape=(self.num_actions,))(y)
-        model = Model(input=l_input,output=l_output)
+        l_output = Lambda(
+          lambda a:
+            K.expand_dims(a[:, 0], -1) +
+            a[:, 1:] -
+            tf.stop_gradient(K.mean(a[:,1:],keepdims=True)),
+            output_shape=(self.num_actions,)
+          )(y)
+        model = Model(input=l_input, output=l_output)
 
         s = tf.placeholder(tf.float32, [None, STATE_LENGTH, FRAME_WIDTH, FRAME_HEIGHT])
         q_values = model(s)
