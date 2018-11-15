@@ -23,7 +23,7 @@ TRAIN = True
 LOAD_NETWORK = False
 SAVE_NETWORK_PATH = '.ignore--saved_networks/' + ENV_NAME
 
-NUM_ACTORS = 4
+NUM_ACTORS = 1
 NUM_EPISODES = 12000  # Number of episodes the agent plays
 INITIAL_REPLAY_SIZE = 50000  # The Learner awaits for this size of transitions to be accumulated.
 NUM_REPLAY_MEMORY = 200000  # Remote memory size
@@ -489,7 +489,7 @@ class Actor:
                     action, q = self.get_action_and_q(state)
                     observation, reward, terminal, _ = self.env.step(action)
                     reward = np.sign(reward)
-                    # self.env.render()
+                    self.env.render()
                     processed_observation = self.preprocess(observation, last_observation)
                     next_state = np.append(state[1:, :, :], processed_observation, axis=0)
 

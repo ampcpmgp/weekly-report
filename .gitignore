@@ -7,7 +7,3 @@ build
 # custom
 other-git--*
 .ignore--*
-
-# models
-open-ai-gym-study/breakout/saved_networks
-open-ai-gym-study/breakout/breakout_model

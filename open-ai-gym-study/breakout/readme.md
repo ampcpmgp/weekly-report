@@ -27,6 +27,14 @@ python3 dqn.py
 
 ## Sample 3 (Ape-X)
 
+参考レポジトリ:
+https://github.com/utarumo/rl_implementation/
+apex_atari.py
+
 ```shell
+# setup
+pip3 install scikit-image keras
+
+# execute
 python3 apex_atari.py
 ```
