@@ -76,11 +76,11 @@ class neuralNet:
 		self.train_step.run(feed_dict={self.X:x , self.Y:y, self.C:c})
 
 	def saveModel(self,index):
-		save_path = self.saver.save(self.sess, str("./breakout_model/model" + str(index) + ".ckpt"))
+		save_path = self.saver.save(self.sess, str("./.ignore--breakout_model/model" + str(index) + ".ckpt"))
 		print("Model saved in file: %s" % save_path)
 
 	def loadModel(self,index):
-		self.saver.restore(self.sess, str("./breakout_model/model" + str(index) + ".ckpt"))
+		self.saver.restore(self.sess, str("./.ignore--breakout_model/model" + str(index) + ".ckpt"))
 		print("Model restored.")
 
 def sanity_check():

@@ -6,7 +6,7 @@ windows 10での参考記事 - https://qiita.com/antimon2/items/b1611dca09edcf93
 
 ## Opem AI gym binding for node.js
 
-まず、vcxsrvを起動しておきます。(winユーザーのみ)
+まず、vcxsrv (Xlaunch) を起動しておきます。(winユーザーのみ)
 
 ### python server
 ```shell

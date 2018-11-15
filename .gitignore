@@ -3,5 +3,7 @@
 node_modules
 dist
 build
+
+# custom
 other-git--*
-open-ai-gym-study/breakout/breakout_model
+.ignore--*
