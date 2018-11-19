@@ -248,7 +248,7 @@ class Environment:
         while True:
             if self.thread_type is 'test':
                 self.env.render()   # 学習後のテストでは描画する
-                # time.sleep(0.1)
+                time.sleep(0.01)
 
             a = self.agent.act(s)   # 行動を決定
             s_, r, done, info = self.env.step(a)   # 行動を実施
@@ -283,7 +283,7 @@ class Environment:
         # スレッドで平均報酬が一定を越えたら終了
         if self.total_reward_vec.mean() > 199:
             isLearned = True
-            # time.sleep(2.0)     # この間に他のlearningスレッドが止まります
+            time.sleep(2.0)     # この間に他のlearningスレッドが止まります
             self.agent.brain.push_parameter_server()    # この成功したスレッドのパラメータをparameter-serverに渡します
 
 
@@ -300,15 +300,15 @@ class Worker_thread:
                 self.environment.run()
 
             if not(isLearned) and self.thread_type is 'test':    # test threadを止めておく
-                # time.sleep(1.0)
+                time.sleep(1.0)
                 1
 
             if isLearned and self.thread_type is 'learning':     # learning threadを止めておく
-                # time.sleep(3.0)
+                time.sleep(3.0)
                 1
 
             if isLearned and self.thread_type is 'test':     # test threadが走る
-                # time.sleep(3.0)
+                time.sleep(3.0)
                 self.environment.run()
 
 
