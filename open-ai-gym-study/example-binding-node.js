@@ -10,7 +10,7 @@ async function sleep (ms) {
 
 async function start () {
   const response = await axios.post('http://127.0.0.1:5000/v1/envs/', {
-    env_id: 'Breakout-v0' // CartPole-v0 or Breakout-v0
+    env_id: 'CartPole-v0' // CartPole-v0 or Breakout-v0
   })
 
   const response1 = await axios.get('http://127.0.0.1:5000/v1/envs/')
