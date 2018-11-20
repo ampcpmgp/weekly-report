@@ -1,6 +1,6 @@
 # ampcpmgp weekly report
 
-issueに今週やったことを書いていきます。
+issueに今週やったことを書いていきます。  
 学習用コードやサンプルがある場合、レポジトリにコードをコミットしていきます。
 
 ```shell
@@ -28,4 +28,5 @@ yarn # もしくは、 npm i
 * [npm](https://www.npmjs.com/package/live-server)
 
 ### ぞの他
-各ディレクトリにある `Readme.md` を参考にしてください。
+各ディレクトリにある `Readme.md` を参考に開発環境をセットアップします。
+
