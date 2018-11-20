@@ -1,32 +1,18 @@
 # ampcpmgp weekly report
 
-issueに今週やったことを書いていきます。  
+issueに今週やったことを書いていきます。
+
 学習用コードやサンプルがある場合、レポジトリにコードをコミットしていきます。
+
+## 使い方
+
+`Node.js@8系以上` と、 `yarn` が入っている必要があります。
 
 ```shell
 yarn # for lint-staged
 ```
 
+ディレクトリごとに必要な環境が異なるため、
+それぞれの `readme.md` を参考に開発環境をセットアップします。
 
-## 使い方
-
-### package.jsonがあるディレクトリ
-
-以下コマンドより開発可能です。
-
-```shell
-yarn # もしくは、 npm i
-```
-
-
-### package.jsonが無いディレクトリ
-
-以下ライブサーバー環境を立ち上げて確認できます。
-
-* [vscode](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
-* [atom](https://atom.io/packages/atom-live-server)
-* [npm](https://www.npmjs.com/package/live-server)
-
-### ぞの他
-各ディレクトリにある `Readme.md` を参考に開発環境をセットアップします。
 
