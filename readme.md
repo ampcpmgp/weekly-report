@@ -26,3 +26,6 @@ yarn # もしくは、 npm i
 * [vscode](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 * [atom](https://atom.io/packages/atom-live-server)
 * [npm](https://www.npmjs.com/package/live-server)
+
+### ぞの他
+各ディレクトリにある `Readme.md` を参考にしてください。
