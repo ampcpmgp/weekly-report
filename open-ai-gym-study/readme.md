@@ -10,6 +10,8 @@ windows 10での参考記事 - https://qiita.com/antimon2/items/b1611dca09edcf93
 
 まず、vcxsrv (Xlaunch) を起動しておきます。(winユーザーのみ)
 
+※もし↓のプログラム起動時に画面が現れなければ、Native opengl optionを外してください。
+
 ### python server
 ```shell
 # setup
