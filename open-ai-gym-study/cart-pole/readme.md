@@ -5,7 +5,7 @@
 pip3 install numpy
 
 # run
-python3 sample.py
+python3 q-learning-sample.py
 ```
 
 ## A3C demo
