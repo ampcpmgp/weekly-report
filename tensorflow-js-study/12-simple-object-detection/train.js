@@ -20,68 +20,31 @@ const path = require('path')
 
 const argparse = require('argparse')
 const canvas = require('canvas')
-const tf = require('@tensorflow/tfjs')
-const synthesizer = require('./synthetic_images')
 const fetch = require('node-fetch')
-
-// To train the model using CUDA/CuDNN,
-//   1) Make sure you have a CUDA-enabled GPU on your system.
-//   2) Install the necessary NVIDIA driver, CUDA toolkit and CuDNN library.
-//   3) Change the "@tensorflow/tfjs-node" dependency to
-//      "@tensorflow/tfjs-node-gpu" in package.json.
-//   4) Change the following line to:
-//      require('@tensorflow/tfjs-node-gpu');
+const tf = require('@tensorflow/tfjs')
 require('@tensorflow/tfjs-node')
+const synthesizer = require('./synthetic_images')
 
 global.fetch = fetch
 
-const CANVAS_SIZE = 224 // Matches the input size of MobileNet.
-
-// Name prefixes of layers that will be unfrozen during fine-tuning.
+const CANVAS_SIZE = 224
+// ファインチューニングを行うレイヤー
 const topLayerGroupNames = ['conv_pw_9', 'conv_pw_10', 'conv_pw_11']
-
-// Name of the layer that will become the top layer of the truncated base.
 const topLayerName = `${topLayerGroupNames[topLayerGroupNames.length - 1]}_relu`
-
-// Used to scale the first column (0-1 shape indicator) of `yTrue`
-// in order to ensure balanced contributions to the final loss value
-// from shape and bounding-box predictions.
 const LABEL_MULTIPLIER = tf.tensor1d([CANVAS_SIZE, 1, 1, 1, 1])
 
 /**
- * Custom loss function for object detection.
- *
- * The loss function is a sum of two losses
- * - shape-class loss, computed as binaryCrossentropy and scaled by
- *   `classLossMultiplier` to match the scale of the bounding-box loss
- *   approximatey.
- * - bounding-box loss, computed as the meanSquaredError between the
- *   true and predicted bounding boxes.
  * @param {tf.Tensor} yTrue True labels. Shape: [batchSize, 5].
- *   The first column is a 0-1 indicator for whether the shape is a triangle
- *   (0) or a rectangle (1). The remaining for columns are the bounding boxes
- *   for the target shape: [left, right, top, bottom], in unit of pixels.
- *   The bounding box values are in the range [0, CANVAS_SIZE).
  * @param {tf.Tensor} yPred Predicted labels. Shape: the same as `yTrue`.
  * @return {tf.Tensor} Loss scalar.
  */
 function customLossFunction (yTrue, yPred) {
   return tf.tidy(() => {
-    // Scale the the first column (0-1 shape indicator) of `yTrue` in order
-    // to ensure balanced contributions to the final loss value
-    // from shape and bounding-box predictions.
     return tf.metrics.meanSquaredError(yTrue.mul(LABEL_MULTIPLIER), yPred)
   })
 }
 
 /**
- * Loads MobileNet, removes the top part, and freeze all the layers.
- *
- * The top removal and layer freezing are preparation for transfer learning.
- *
- * Also gets handles to the layers that will be unfrozen during the fine-tuning
- * phase of the training.
- *
  * @return {tf.Model} The truncated MobileNet, with all layers frozen.
  */
 async function loadTruncatedBase () {
@@ -89,7 +52,6 @@ async function loadTruncatedBase () {
     'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json'
   )
 
-  // Return a model that outputs an internal activation.
   const fineTuningLayers = []
   const layer = mobilenet.getLayer(topLayerName)
   const truncatedBase = tf.model({
@@ -107,10 +69,6 @@ async function loadTruncatedBase () {
     }
   }
 
-  tf.util.assert(
-    fineTuningLayers.length > 1,
-    `Did not find any layers that match the prefixes ${topLayerGroupNames}`
-  )
   return { truncatedBase, fineTuningLayers }
 }
 
