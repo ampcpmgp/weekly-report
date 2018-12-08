@@ -10,6 +10,7 @@
 * [knn-classifierのサンプルページ](https://ampcpmgp.github.io/weekly-report/tensorflow-js-study/11-knn-classifier/public/)
 
 
+
 ## 開発環境のセットアップ
 
 ### package.jsonが有るディレクトリ
@@ -30,3 +31,6 @@ npm start
 * [atom](https://atom.io/packages/atom-live-server)
 * [npm](https://www.npmjs.com/package/live-server)
 
+
+# 参考ページ
+* [CNN階層を可視化したサイト](http://scs.ryerson.ca/~aharley/vis/conv/)
