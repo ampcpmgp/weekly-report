@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>face-api.js example</title>
+  <style>
+    body > section {
+      display: inline-block;
+      position: relative;
+    }
+    body > section > section#results > div.frame {
+      position: absolute;
+      border: solid 2px rgba(0, 255, 64, 0.6);
+      color: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.5.0/flv.min.js"></script>
+</head>
+<body>
+  <section>
+    <video id="video"></video>
+    <section id="results"></section>
+  </section>
+
+  <section id="captures"></section>
+
+  <script src="./lib/face-api.min.js"></script>
+  <script src="index.js"></script>
+  <script>
+    (async () => {
+      video.onloadeddata = start
+      const flvPlayer = flvjs.createPlayer({
+        type: 'flv',
+        url: 'http://localhost:8000/live/STREAM_NAME.flv'
+      })
+      flvPlayer.attachMediaElement(video)
+      flvPlayer.load()
+      flvPlayer.play()
+    })()
+  </script>
+</body>
+</html>
