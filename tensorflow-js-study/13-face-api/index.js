@@ -17,6 +17,8 @@ function setName (descriptor) {
   const name = window.prompt('input name')
   const descriptors = personDescriptos[name]
 
+  if (!name) return
+
   if (descriptors) {
     descriptors.push(descriptor)
   } else {
@@ -51,15 +53,6 @@ function setCaptures () {
     }
     capturedImgCtx.putImageData(pixel, 0, 0)
     captures.appendChild(capturedImgCanvas)
-  })
-}
-async function setupWebCam () {
-  const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-  video.srcObject = stream
-  video.onclick = setCaptures
-
-  return new Promise(resolve => {
-    video.onloadedmetadata = resolve
   })
 }
 async function detect () {
@@ -103,8 +96,8 @@ async function detect () {
     })
   }
 }
-async function start () {
-  await setupWebCam()
+window.start = async () => {
+  video.onclick = setCaptures
   await faceapi.loadTinyFaceDetectorModel('./models')
   await faceapi.loadFaceLandmarkTinyModel('./models')
   await faceapi.loadFaceRecognitionModel('./models')
@@ -112,5 +105,3 @@ async function start () {
 
   detect()
 }
-
-start()

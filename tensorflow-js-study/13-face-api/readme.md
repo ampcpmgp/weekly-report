@@ -1,16 +1,11 @@
-# 使い方
+## 通常版
+ライブリロードサーバーを開始し、 `index.html` を開く
 
-TODO: 上手く動かなかったため、動作確認するをする
+## obsを使う場合
 
-https で ライブリロードしたほうが効率が良いため、httpsで使えるようにする。
-
-下記はオレオレ証明書の作り方
+`obs.html` を開き、以下のコマンド入力する
 
 ```shell
-openssl genrsa 2048 > server.key
-openssl req -new -key server.key > server.csr
-openssl x509 -days 3650 -req -signkey server.key < server.csr > server.crt
+yarn
+node rtmp-server.js
 ```
-
-上記で生成された二つのファイルを、httpsサーバーに設定する。
-
