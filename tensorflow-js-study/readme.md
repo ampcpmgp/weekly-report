@@ -8,6 +8,7 @@
 * [webcam-transfer-learningのサンプルページ](https://ampcpmgp.github.io/weekly-report/tensorflow-js-study/8-webcam-transfer-learning/public/)
 * [human-detectionのサンプルページ](https://ampcpmgp.github.io/weekly-report/tensorflow-js-study/9-human-detection/public/)
 * [knn-classifierのサンプルページ](https://ampcpmgp.github.io/weekly-report/tensorflow-js-study/11-knn-classifier/public/)
+* [face-apiのサンプルページ](https://ampcpmgp.github.io/weekly-report/tensorflow-js-study/13-face-api/)
 
 
 
