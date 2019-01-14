@@ -16,8 +16,8 @@
  */
 
 import * as tf from '@tensorflow/tfjs'
-import {generateData} from './data'
-import {plotData, plotDataAndPredictions, renderCoefficients} from './ui'
+import { generateData } from './data'
+import { plotData, plotDataAndPredictions, renderCoefficients } from './ui'
 
 /**
  * We want to learn the coefficients that give correct solutions to the
@@ -62,7 +62,8 @@ const optimizer = tf.train.sgd(learningRate)
 function predict (x) {
   // y = a * x ^ 3 + b * x ^ 2 + c * x + d
   return tf.tidy(() => {
-    return a.mul(x.pow(tf.scalar(3, 'int32')))
+    return a
+      .mul(x.pow(tf.scalar(3, 'int32')))
       .add(b.mul(x.square()))
       .add(c.mul(x))
       .add(d)
@@ -78,7 +79,10 @@ function predict (x) {
  */
 function loss (prediction, labels) {
   // Having a good error function is key for training a machine learning model
-  const error = prediction.sub(labels).square().mean()
+  const error = prediction
+    .sub(labels)
+    .square()
+    .mean()
   return error
 }
 
@@ -89,7 +93,7 @@ function loss (prediction, labels) {
  * ys — training data y values
  */
 async function train (trainingData, numIterations) {
-  const {xs, ys} = trainingData
+  const { xs, ys } = trainingData
 
   for (let iter = 0; iter < numIterations; iter++) {
     // optimizer.minimize is where the training happens.
@@ -119,14 +123,17 @@ async function train (trainingData, numIterations) {
     })
     const predictionsAfter = predict(trainingData.xs)
     await plotDataAndPredictions(
-      '#trained .plot', trainingData.xs, trainingData.ys, predictionsAfter)
+      '#trained .plot',
+      trainingData.xs,
+      trainingData.ys,
+      predictionsAfter
+    )
     predictionsAfter.dispose()
-
   }
 }
 
 async function learnCoefficients () {
-  const trueCoefficients = {a: -0.8, b: -0.2, c: 0.9, d: 0.5}
+  const trueCoefficients = { a: -0.8, b: -0.2, c: 0.9, d: 0.5 }
   const trainingData = generateData(100, trueCoefficients)
 
   // Plot original data
@@ -142,7 +149,11 @@ async function learnCoefficients () {
   })
   const predictionsBefore = predict(trainingData.xs)
   await plotDataAndPredictions(
-    '#random .plot', trainingData.xs, trainingData.ys, predictionsBefore)
+    '#random .plot',
+    trainingData.xs,
+    trainingData.ys,
+    predictionsBefore
+  )
 
   // Train the model!
   await train(trainingData, numIterations)

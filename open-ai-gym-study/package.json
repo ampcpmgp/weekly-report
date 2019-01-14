@@ -1,0 +1,15 @@
+{
+  "name": "open-ai-gym-study",
+  "version": "1.0.0",
+  "description": "Open AI Gym のインストールをします。",
+  "main": "example-binding-node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sample": "node ./example-binding-node"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}

@@ -38,11 +38,12 @@ button.onclick = () => {
 }
 
 const select = document.getElementById('base_model')
-select.onchange = async (event) => {
+select.onchange = async event => {
   const model = await modelPromise
   model.dispose()
   modelPromise = cocoSsd.load(
-    event.srcElement.options[event.srcElement.selectedIndex].value)
+    event.srcElement.options[event.srcElement.selectedIndex].value
+  )
 }
 
 const image = document.getElementById('image')
@@ -68,6 +69,7 @@ runButton.onclick = async () => {
     context.fillText(
       result[i].score.toFixed(3) + ' ' + result[i].class,
       result[i].bbox[0],
-      result[i].bbox[1] > 10 ? result[i].bbox[1] - 5 : 10)
+      result[i].bbox[1] > 10 ? result[i].bbox[1] - 5 : 10
+    )
   }
 }
