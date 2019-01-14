@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>face-api.js example</title>
+  <style>
+    body > section {
+      display: inline-block;
+      position: relative;
+    }
+    body > section > section#results > div.frame {
+      position: absolute;
+      border: solid 2px rgba(0, 64, 255, 0.6);
+    }
+
+
+  </style>
+</head>
+<body>
+  <section>
+    <video autoplay="true" id="video"></video>
+    <section id="results"></section>
+  </section>
+  <script src="./lib/face-api.min.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
