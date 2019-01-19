@@ -1,7 +1,8 @@
 const faceapi = window.faceapi
-const video = window.video
-const results = window.results
-const captures = window.captures
+const status = document.getElementById('status')
+const video = document.getElementById('video')
+const results = document.getElementById('results')
+const captures = document.getElementById('captures')
 const personDescriptos = {}
 let lastResults = []
 
@@ -98,9 +99,11 @@ async function detect () {
 }
 window.start = async () => {
   video.onclick = setCaptures
+  status.textContent = 'モデル読み込み中...'
   await faceapi.loadTinyFaceDetectorModel('./models')
   await faceapi.loadFaceLandmarkTinyModel('./models')
   await faceapi.loadFaceRecognitionModel('./models')
+  status.textContent = 'モデル読み込み完了'
   console.info('load mobilenet v1 model')
 
   detect()
