@@ -18,12 +18,20 @@
   </style>
 </head>
 <body>
+  <div>status: <span id="status"></span></div>
+
   <section>
     <video autoplay="true" id="video"></video>
     <section id="results"></section>
   </section>
 
   <section id="captures"></section>
+
+  <div>
+    <p>使い方: モデル読み込み完了後、人の顔を映すと解析結果が枠で表示されます。</p>
+    <p>枠がある状態でビデオ動画をクリックすると、右側に枠内の画像が表示され</p>
+    <p>その画像をクリックし名前を入力すると、人の判定が可能になります。</p>
+  </div>
 
   <script src="./lib/face-api.min.js"></script>
   <script src="index.js"></script>
