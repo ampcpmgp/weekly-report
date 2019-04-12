@@ -1,8 +1,12 @@
+# node.js
 .am-mocktimes
 .cache
 node_modules
 dist
 build
+
+# Rust
+target
 
 # custom
 other-git--*
