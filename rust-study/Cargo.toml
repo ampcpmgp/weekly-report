@@ -9,3 +9,7 @@ edition = "2018"
 [[bin]]
 name = "rust-study"
 path = "main.rs"
+
+[[bin]]
+name = "pointer"
+path = "src/pointer.rs"
