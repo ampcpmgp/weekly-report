@@ -14,9 +14,10 @@ const hand = () => html`
 `
 const foot = () => html`
   <a-box color="${COLORS.BASE}" width="0.2" depth="0.2"></a-box>
-  <a-box color="${
-  COLORS.BASE
-}" width="0.24" depth="0.32" height="0.2" position="0 0.5 0"></a-box>
+  <a-box
+    color="${COLORS.BASE}"
+    width="0.24" depth="0.32" height="0.2" position="0 0.5 0">
+  </a-box>
   <a-box color="#FF8349" width="0.24" depth="0.1" height="0.1" position="0 0.5 -0.2"></a-box>
   <a-box color="#FF8349" width="0.24" depth="0.05" height="0.1" position="0 0.5 0.2"></a-box>
 `
@@ -37,7 +38,7 @@ const eye = () => html`
 const mouse = () => html`
   <a-circle
     color="white" radius="${1 /
-      3}" scale="3 1 1" material="opacity: 0.8" theta-start="0" theta-length="180">
+      3}" scale="3 1 1" material="opacity: 0.6" theta-start="0" theta-length="180">
   </a-circle>
   <a-circle
     color="#755033" theta-start="180" radius="0.06" theta-length="180" position="0 0.05 1">
@@ -55,7 +56,9 @@ const scene = () => html`
     <a-entity id="whole" position="0 1.5 -4">
 
       <a-entity id="head" position="0 0.8 0" rotation="0 0 0">
-        <a-box color="${COLORS.BASE}" width="2"></a-box>
+        <a-box
+          color="${COLORS.BASE}" width="2"
+        ></a-box>
         ${leaf({ position: '1 0.5 0.5' })}
         ${leaf({ position: '-1 0.5 0.5', rotation: '0 90 0' })}
         <a-entity position="0.3 -0.1 0.51">
