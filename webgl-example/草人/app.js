@@ -2,6 +2,9 @@ import {
   html,
   render
 } from 'https://unpkg.com/lighterhtml@0.9.4/esm/index.js?module'
+import { rotation } from './utils.js'
+
+void rotation
 
 const COLORS = {
   BASE: '#67E231',
@@ -50,6 +53,7 @@ const mouse = () => html`
 
 const scene = () => html`
   <a-scene style="height: 400px" embedded>
+
     <a-sky color="#ECECEC"></a-sky>
     <a-light type="hemisphere" color="#ccc" position="-1 1 0"></a-light>
 
@@ -57,6 +61,7 @@ const scene = () => html`
 
       <a-entity id="head" position="0 0.8 0" rotation="0 0 0">
         <a-box
+          material="shader:grid-glitch; color: blue;"
           color="${COLORS.BASE}" width="2"
         ></a-box>
         ${leaf({ position: '1 0.5 0.5' })}
@@ -69,7 +74,7 @@ const scene = () => html`
           ${eye()}
         </a-entity>
 
-        <a-entity position="0 -0.5 0.501">
+        <a-entity position="0 -0.4 -0.5">
           ${mouse()}
         </a-entity>
       </a-entity>
