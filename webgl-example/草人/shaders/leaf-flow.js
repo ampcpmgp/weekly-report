@@ -1,5 +1,3 @@
-// shader-grid-glitch.js
-
 const vertexShader = `
 varying vec2 vUv;
 
@@ -11,7 +9,6 @@ void main() {
 
 const fragmentShader = `
 varying vec2 vUv;
-uniform vec3 color;
 uniform float timeMsec; // A-Frame time in milliseconds.
 
 void main() {
@@ -37,9 +34,8 @@ void main() {
 }
 `
 
-window.AFRAME.registerShader('grid-glitch', {
+window.AFRAME.registerShader('leaf-flow', {
   schema: {
-    color: { type: 'color', is: 'uniform' },
     timeMsec: { type: 'time', is: 'uniform' }
   },
 
