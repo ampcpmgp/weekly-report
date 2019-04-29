@@ -7,8 +7,7 @@ build
 
 # Rust
 target
-rust-study/**/*.exe
-rust-study/**/*.pdb
+rust-study/**/main
 
 # custom
 other-git--*
