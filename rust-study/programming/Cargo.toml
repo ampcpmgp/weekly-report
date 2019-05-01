@@ -7,5 +7,17 @@ edition = "2018"
 [dependencies]
 
 [[bin]]
+name = "array"
+path = "src/array.rs"
+
+[[bin]]
+name = "tuple"
+path = "src/tuple.rs"
+
+[[bin]]
+name = "data-types"
+path = "src/data-types.rs"
+
+[[bin]]
 name = "pointer"
 path = "src/pointer.rs"
