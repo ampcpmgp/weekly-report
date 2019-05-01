@@ -7,6 +7,14 @@ edition = "2018"
 [dependencies]
 
 [[bin]]
+name = "loop"
+path = "src/loop.rs"
+
+[[bin]]
+name = "function"
+path = "src/function.rs"
+
+[[bin]]
 name = "array"
 path = "src/array.rs"
 
