@@ -1,14 +1,10 @@
 [package]
-name = "rust-study"
+name = "main"
 version = "0.1.0"
 authors = ["ampcpmgp <ampcpmgp@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-
-[[bin]]
-name = "rust-study"
-path = "main.rs"
 
 [[bin]]
 name = "pointer"
