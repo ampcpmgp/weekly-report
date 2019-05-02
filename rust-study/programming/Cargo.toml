@@ -7,6 +7,10 @@ edition = "2018"
 [dependencies]
 
 [[bin]]
+name = "borrowing"
+path = "src/borrowing.rs"
+
+[[bin]]
 name = "ownership"
 path = "src/ownership.rs"
 
