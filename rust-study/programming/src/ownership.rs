@@ -1,3 +1,5 @@
+// https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html
+
 fn main() {
     let s = String::from("hello");
     let mut s2 = s;

@@ -7,6 +7,10 @@ edition = "2018"
 [dependencies]
 
 [[bin]]
+name = "slice-type"
+path = "src/slice-type.rs"
+
+[[bin]]
 name = "borrowing"
 path = "src/borrowing.rs"
 
