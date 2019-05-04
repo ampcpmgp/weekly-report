@@ -11,7 +11,7 @@ struct User {
 #[derive(Debug)]
 struct Color(i32, i32, i32);
 
-fn main() {
+pub fn run() {
     let user1 = User {
         email: String::from("someone@example.com"),
         username: String::from("someusername123"),

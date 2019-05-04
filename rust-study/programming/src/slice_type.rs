@@ -1,6 +1,6 @@
 // https://doc.rust-lang.org/book/ch04-03-slices.html
 
-fn main() {
+pub fn run() {
     let s = String::from("hello world");
     let w = first_word(&s);
 

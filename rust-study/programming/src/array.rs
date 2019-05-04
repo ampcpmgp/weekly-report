@@ -1,4 +1,4 @@
-fn main() {
+pub fn run() {
     let months = ["Jan", "Feb", "Mar"];
 
     println!("months: {:?}", months);

@@ -1,6 +1,6 @@
 // https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html
 
-fn main() {
+pub fn run() {
     let s = String::from("hello");
     let mut s2 = s;
     let s3 = s2.clone();

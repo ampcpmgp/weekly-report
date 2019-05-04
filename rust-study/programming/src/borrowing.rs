@@ -1,4 +1,4 @@
-fn main() {
+pub fn run() {
     let mut s1 = String::from("hello");
 
     change(&mut s1);
