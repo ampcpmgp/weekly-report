@@ -30,9 +30,9 @@ pub fn run() {
 
     match some_u8_value {
         1 => println!("one"),
-        3 => println!("one"),
-        5 => println!("one"),
-        _ => println!("one"),
+        3 => println!("three"),
+        5 => println!("five"),
+        _ => println!("other"),
     }
 }
 

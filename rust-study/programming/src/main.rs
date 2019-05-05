@@ -3,6 +3,7 @@ mod borrowing;
 mod data_types;
 mod enum_case;
 mod function;
+mod if_let;
 mod loop_case;
 mod match_case;
 mod ownership;
@@ -22,6 +23,7 @@ fn main() {
         "data_types" => data_types::run(),
         "enum_case" => enum_case::run(),
         "function" => function::run(),
+        "if_let" => if_let::run(),
         "loop_case" => loop_case::run(),
         "match_case" => match_case::run(),
         "ownership" => ownership::run(),
