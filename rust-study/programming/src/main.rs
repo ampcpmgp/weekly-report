@@ -3,9 +3,11 @@ mod borrowing;
 mod data_types;
 mod enum_case;
 mod function;
+mod guessing_game;
 mod if_let;
 mod loop_case;
 mod match_case;
+mod module_scope;
 mod ownership;
 mod pointer;
 mod slice_type;
@@ -23,9 +25,11 @@ fn main() {
         "data_types" => data_types::run(),
         "enum_case" => enum_case::run(),
         "function" => function::run(),
+        "guessing_game" => guessing_game::run(),
         "if_let" => if_let::run(),
         "loop_case" => loop_case::run(),
         "match_case" => match_case::run(),
+        "module_scope" => crate::module_scope::run(),
         "ownership" => ownership::run(),
         "pointer" => pointer::run(),
         "slice_type" => slice_type::run(),
