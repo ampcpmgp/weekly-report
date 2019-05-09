@@ -4,6 +4,7 @@ mod data_types;
 mod enum_case;
 mod function;
 mod guessing_game;
+mod hash_maps;
 mod if_let;
 mod loop_case;
 mod match_case;
@@ -28,6 +29,7 @@ fn main() {
         "enum_case" => enum_case::run(),
         "function" => function::run(),
         "guessing_game" => guessing_game::run(),
+        "hash_maps" => hash_maps::run(),
         "if_let" => if_let::run(),
         "loop_case" => loop_case::run(),
         "match_case" => match_case::run(),
