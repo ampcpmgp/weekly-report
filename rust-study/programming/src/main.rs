@@ -3,6 +3,7 @@ mod borrowing;
 mod data_types;
 mod enum_case;
 mod function;
+mod generics_syntax;
 mod guessing_game;
 mod hash_maps;
 mod if_let;
@@ -17,6 +18,7 @@ mod slice_type;
 mod strings;
 mod struct_case;
 mod struct_rectangle;
+mod traits_syntax;
 mod tuple;
 mod unrecoverable_errors;
 mod vectors;
@@ -31,6 +33,7 @@ fn main() {
         "data_types" => data_types::run(),
         "enum_case" => enum_case::run(),
         "function" => function::run(),
+        "generics_syntax" => generics_syntax::run(),
         "guessing_game" => guessing_game::run(),
         "hash_maps" => hash_maps::run(),
         "if_let" => if_let::run(),
@@ -45,6 +48,7 @@ fn main() {
         "strings" => strings::run(),
         "struct_case" => struct_case::run(),
         "struct_rectangle" => struct_rectangle::run(),
+        "traits_syntax" => traits_syntax::run(),
         "tuple" => tuple::run(),
         "unrecoverable_errors" => unrecoverable_errors::run(),
         "vectors" => vectors::run(),
