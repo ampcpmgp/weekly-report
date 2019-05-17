@@ -7,6 +7,7 @@ mod generics_syntax;
 mod guessing_game;
 mod hash_maps;
 mod if_let;
+mod lifetime;
 mod loop_case;
 mod match_case;
 mod module_scope;
@@ -37,6 +38,7 @@ fn main() {
         "guessing_game" => guessing_game::run(),
         "hash_maps" => hash_maps::run(),
         "if_let" => if_let::run(),
+        "lifetime" => lifetime::run(),
         "loop_case" => loop_case::run(),
         "match_case" => match_case::run(),
         "module_scope" => crate::module_scope::run(),
