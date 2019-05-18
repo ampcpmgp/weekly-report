@@ -8,4 +8,5 @@ edition = "2018"
 rand = "0.6.5"
 
 [lib]
+name = "study_lib"
 path = "src/lib.rs"
