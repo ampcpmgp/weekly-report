@@ -1,5 +1,6 @@
 mod array;
 mod borrowing;
+mod closure;
 mod data_types;
 mod enum_case;
 mod function;
@@ -31,6 +32,7 @@ fn main() {
     match name {
         "array" => array::run(),
         "borrowing" => borrowing::run(),
+        "closure" => closure::run(),
         "data_types" => data_types::run(),
         "enum_case" => enum_case::run(),
         "function" => function::run(),
