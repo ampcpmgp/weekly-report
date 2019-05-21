@@ -15,6 +15,7 @@ mod match_case;
 mod module_scope;
 mod ownership;
 mod panic_or_not;
+mod performance;
 mod pointer;
 mod recoverable_errors;
 mod slice_type;
@@ -48,6 +49,7 @@ fn main() {
         "module_scope" => crate::module_scope::run(),
         "ownership" => ownership::run(),
         "panic_or_not" => panic_or_not::run(),
+        "performance" => performance::run(),
         "pointer" => pointer::run(),
         "recoverable_errors" => recoverable_errors::run(),
         "slice_type" => slice_type::run(),
