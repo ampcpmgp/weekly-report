@@ -1,3 +1,13 @@
+/// Adds two to the number give.
+///
+/// # Example
+///
+/// ```
+/// let arg = 5;
+/// let answer = study_lib::adder::add_two(arg);
+///
+/// assert_eq!(7, answer);
+/// ```
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
