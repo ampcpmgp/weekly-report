@@ -1,7 +1,9 @@
 mod array;
 mod borrowing;
+mod box_type;
 mod closure;
 mod data_types;
+mod deref;
 mod enum_case;
 mod function;
 mod generics_syntax;
@@ -34,8 +36,10 @@ fn main() {
     match name {
         "array" => array::run(),
         "borrowing" => borrowing::run(),
+        "box_type" => box_type::run(),
         "closure" => closure::run(),
         "data_types" => data_types::run(),
+        "deref" => deref::run(),
         "enum_case" => enum_case::run(),
         "function" => function::run(),
         "generics_syntax" => generics_syntax::run(),
