@@ -4,6 +4,7 @@ mod box_type;
 mod closure;
 mod data_types;
 mod deref;
+mod drop;
 mod enum_case;
 mod function;
 mod generics_syntax;
@@ -40,6 +41,7 @@ fn main() {
         "closure" => closure::run(),
         "data_types" => data_types::run(),
         "deref" => deref::run(),
+        "drop" => drop::run(),
         "enum_case" => enum_case::run(),
         "function" => function::run(),
         "generics_syntax" => generics_syntax::run(),
