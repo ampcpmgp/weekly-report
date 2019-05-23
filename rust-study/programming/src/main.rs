@@ -33,6 +33,13 @@ mod vectors;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
+
+    if args.len() < 2 {
+        println!("src配下にあるmod名を引数に入れてください");
+
+        return;
+    }
+
     let name = args[1].as_str();
 
     match name {

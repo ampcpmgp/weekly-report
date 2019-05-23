@@ -4,7 +4,7 @@
 ///
 /// ```
 /// let arg = 5;
-/// let answer = study_lib::adder::add_two(arg);
+/// let answer = study_lib::lib_src::adder::add_two(arg);
 ///
 /// assert_eq!(7, answer);
 /// ```

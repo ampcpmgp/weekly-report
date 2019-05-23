@@ -5,7 +5,7 @@ mod common;
 fn it_adds_two() {
     // `cargo test -- --nocapture` を入力することで下記が出力される。
     println!("{}", "nocapture");
-    assert_eq!(4, study_lib::adder::add_two(2));
+    assert_eq!(4, study_lib::lib_src::adder::add_two(2));
 }
 
 // `cargo test -- --ignored` で以下ignore annotationがついたもののみをテスト可能。
