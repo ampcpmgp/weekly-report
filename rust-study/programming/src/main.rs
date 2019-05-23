@@ -20,6 +20,7 @@ mod ownership;
 mod panic_or_not;
 mod performance;
 mod pointer;
+mod rc;
 mod recoverable_errors;
 mod slice_type;
 mod strings;
@@ -57,6 +58,7 @@ fn main() {
         "panic_or_not" => panic_or_not::run(),
         "performance" => performance::run(),
         "pointer" => pointer::run(),
+        "rc" => rc::run(),
         "recoverable_errors" => recoverable_errors::run(),
         "slice_type" => slice_type::run(),
         "strings" => strings::run(),
