@@ -28,6 +28,7 @@ mod slice_type;
 mod strings;
 mod struct_case;
 mod struct_rectangle;
+mod thread_shared_state;
 mod threads;
 mod threads_message_passing;
 mod traits_syntax;
@@ -77,6 +78,7 @@ fn main() {
         "strings" => strings::run(),
         "struct_case" => struct_case::run(),
         "struct_rectangle" => struct_rectangle::run(),
+        "thread_shared_state" => thread_shared_state::run(),
         "threads" => threads::run(),
         "threads_message_passing" => threads_message_passing::run(),
         "traits_syntax" => traits_syntax::run(),
