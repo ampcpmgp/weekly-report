@@ -28,6 +28,8 @@ mod slice_type;
 mod strings;
 mod struct_case;
 mod struct_rectangle;
+mod threads;
+mod threads_message_passing;
 mod traits_syntax;
 mod tuple;
 mod unrecoverable_errors;
@@ -75,6 +77,8 @@ fn main() {
         "strings" => strings::run(),
         "struct_case" => struct_case::run(),
         "struct_rectangle" => struct_rectangle::run(),
+        "threads" => threads::run(),
+        "threads_message_passing" => threads_message_passing::run(),
         "traits_syntax" => traits_syntax::run(),
         "tuple" => tuple::run(),
         "unrecoverable_errors" => unrecoverable_errors::run(),
