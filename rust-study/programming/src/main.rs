@@ -23,6 +23,7 @@ mod pointer;
 mod rc;
 mod recoverable_errors;
 mod refcell;
+mod reference_cycles;
 mod slice_type;
 mod strings;
 mod struct_case;
@@ -69,6 +70,7 @@ fn main() {
         "rc" => rc::run(),
         "recoverable_errors" => recoverable_errors::run(),
         "refcell" => refcell::run(),
+        "reference_cycles" => reference_cycles::run(),
         "slice_type" => slice_type::run(),
         "strings" => strings::run(),
         "struct_case" => struct_case::run(),
