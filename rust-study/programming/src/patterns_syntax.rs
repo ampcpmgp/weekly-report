@@ -145,10 +145,8 @@ pub fn run() {
         foo(3, 4);
     }
 
-    // ネストされた_で値の一部を無視する
+    println!("--- ネストされた_で値の一部を無視する ---");
     {
-        println!("--- ネストされた_で値の一部を無視する ---");
-
         let mut setting_value = Some(5);
         let new_setting_value = Some(10);
 
@@ -156,6 +154,109 @@ pub fn run() {
             (Some(_), Some(_)) => {
                 println!("Can't overwrite");
             }
+
+            _ => {
+                setting_value = new_setting_value;
+            }
+        }
+
+        println!("{:?}", setting_value);
+    }
+
+    println!("_ と _x 記法の違い。");
+    {
+        let s = Some(String::from("Hello"));
+
+        // _s を使うと、所有権を奪うため、 s が使えなくなる
+        // if let Some(_s) = s {
+        if let Some(_) = s {
+            println!("found a string");
+        }
+
+        println!("{:?}", s);
+    }
+
+    println!(".. で値の残りの部分を無視する");
+    {
+        #[allow(dead_code)]
+        struct Point {
+            x: i32,
+            y: i32,
+            z: i32,
+        }
+
+        let origin = Point { x: 0, y: 0, z: 0 };
+
+        match origin {
+            Point { x, .. } => println!("x is {}", x),
+        }
+    }
+
+    println!("ref と ref mut でパターンに参照を生成する");
+    {
+        let robot_name = Some(String::from("Bors"));
+
+        match robot_name {
+            Some(ref name) => println!("{}", name),
+            None => (),
+        }
+
+        println!("{:?}", robot_name);
+
+        let mut robot_name = Some(String::from("Bors"));
+
+        match robot_name {
+            Some(ref mut name) => *name = String::from("Another name"),
+            None => (),
+        }
+
+        println!("{:?}", robot_name);
+    }
+
+    println!("マッチガードで追加の条件式");
+    {
+        let num = Some(4);
+
+        match num {
+            Some(x) if x < 5 => println!("less than file: {}", x),
+            Some(x) => println!("{}", x),
+            None => (),
+        }
+
+        let x = Some(5);
+        let y = 10;
+
+        match x {
+            Some(50) => println!("50"),
+            Some(n) if n == y => println!("Matched, {:?}", x),
+            _ => println!("Default"),
+        }
+
+        println!("x = {:?}, y = {:?}", x, y);
+
+        let x = 4;
+        let y = false;
+
+        match x {
+            4 | 5 | 6 if y => println!("yes"),
+            _ => println!("no"),
+        }
+    }
+
+    println!("--- @束縛 ---");
+    {
+        enum Message {
+            Hello { id: i32 },
+        }
+
+        let msg = Message::Hello { id: 5 };
+
+        match msg {
+            Message::Hello {
+                id: id_variable @ 3...7,
+            } => println!("@ 3...7 range {}", id_variable),
+            Message::Hello { id: 10...12 } => println!("Found"),
+            Message::Hello { id } => println!("{}", id),
         }
     }
 }
