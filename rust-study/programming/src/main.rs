@@ -19,6 +19,8 @@ mod module_scope;
 mod oo_design_patterns;
 mod ownership;
 mod panic_or_not;
+mod patterns;
+mod patterns_syntax;
 mod performance;
 mod pointer;
 mod rc;
@@ -70,6 +72,8 @@ fn main() {
         "oo_design_patterns" => oo_design_patterns::run(),
         "ownership" => ownership::run(),
         "panic_or_not" => panic_or_not::run(),
+        "patterns" => patterns::run(),
+        "patterns_syntax" => patterns_syntax::run(),
         "performance" => performance::run(),
         "pointer" => pointer::run(),
         "rc" => rc::run(),
