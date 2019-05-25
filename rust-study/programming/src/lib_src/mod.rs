@@ -1,6 +1,10 @@
 pub mod adder;
+pub mod averaged_collection;
 pub mod greeting;
 pub mod guess;
+pub mod post;
+pub mod post_improved;
 pub mod rectangle;
 pub mod refcell;
 pub mod test_organization;
+pub mod trait_objects;

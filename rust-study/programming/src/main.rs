@@ -16,6 +16,7 @@ mod lifetime;
 mod loop_case;
 mod match_case;
 mod module_scope;
+mod oo_design_patterns;
 mod ownership;
 mod panic_or_not;
 mod performance;
@@ -66,6 +67,7 @@ fn main() {
         "loop_case" => loop_case::run(),
         "match_case" => match_case::run(),
         "module_scope" => crate::module_scope::run(),
+        "oo_design_patterns" => oo_design_patterns::run(),
         "ownership" => ownership::run(),
         "panic_or_not" => panic_or_not::run(),
         "performance" => performance::run(),
