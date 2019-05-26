@@ -37,6 +37,7 @@ mod threads_message_passing;
 mod traits_syntax;
 mod tuple;
 mod unrecoverable_errors;
+mod unsafe_rust;
 mod vectors;
 
 fn main() {
@@ -90,6 +91,7 @@ fn main() {
         "traits_syntax" => traits_syntax::run(),
         "tuple" => tuple::run(),
         "unrecoverable_errors" => unrecoverable_errors::run(),
+        "unsafe_rust" => unsafe_rust::run(),
         "vectors" => vectors::run(),
         _ => println!("src配下にあるmod名を引数に入れてください"),
     }
