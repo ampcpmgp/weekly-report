@@ -2,7 +2,7 @@
 
 pub struct Context<'s>(&'s str);
 
-// struct Parser<'c, 's> { // ドキュメントではこの書き方はエラー
+// struct Parser<'c, 's> { // 2015 edition ではこの書き方はエラー
 pub struct Parser<'c, 's: 'c> {
     context: &'c Context<'s>,
 }
@@ -17,7 +17,7 @@ pub fn parse_context(context: Context) -> Result<(), &str> {
     Parser { context: &context }.parse()
 }
 
-// struct Ref<'a, T>(&'a T); // ドキュメントではこの書き方はエラー
+// struct Ref<'a, T>(&'a T); // 2015 edition ではこの書き方はエラー
 
 pub struct Ref<'a, T: 'a>(&'a T);
 
