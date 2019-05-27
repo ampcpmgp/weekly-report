@@ -1,4 +1,5 @@
 pub mod adder;
+pub mod advanced_traits;
 pub mod advanced_lifetime;
 pub mod averaged_collection;
 pub mod greeting;
