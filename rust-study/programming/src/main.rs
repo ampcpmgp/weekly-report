@@ -1,3 +1,5 @@
+mod advanced_function;
+mod advanced_types;
 mod array;
 mod borrowing;
 mod box_type;
@@ -52,6 +54,8 @@ fn main() {
     let name = args[1].as_str();
 
     match name {
+        "advanced_function" => advanced_function::run(),
+        "advanced_types" => advanced_types::run(),
         "array" => array::run(),
         "borrowing" => borrowing::run(),
         "box_type" => box_type::run(),
