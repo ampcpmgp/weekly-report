@@ -1,17 +1,24 @@
 // https://doc.rust-jp.rs/book/second-edition/ch20-01-single-threaded.html
+extern crate multi_thread_server;
 
+use multi_thread_server::ThreadPool;
 use std::fs::File;
 use std::io::prelude::*;
 use std::net::TcpListener;
 use std::net::TcpStream;
+use std::thread;
+use std::time::Duration;
 
 fn main() {
     let listner = TcpListener::bind("127.0.0.1:7878").unwrap();
+    let pool = ThreadPool::new(4);
 
     for stream in listner.incoming() {
         let stream = stream.unwrap();
 
-        handle_connection(stream);
+        pool.execute(|| {
+            handle_connection(stream);
+        });
     }
 }
 
@@ -23,6 +30,7 @@ fn handle_connection(mut stream: TcpStream) {
     let (status_line, filename) = if buffer.starts_with(get) {
         ("HTTP/1.1 200 OK \r\n\r\n", "html/index.html")
     } else {
+        thread::sleep(Duration::from_secs(5));
         ("HTTP/1.1 404 NOT FOUND\r\n\r\n", "html/404.html")
     };
 

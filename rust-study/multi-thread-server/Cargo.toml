@@ -1,5 +1,5 @@
 [package]
-name = "multi-thread-server"
+name = "multi_thread_server"
 version = "0.1.0"
 authors = ["ampcpmgp <ampcpmgp@gmail.com>"]
 edition = "2018"
