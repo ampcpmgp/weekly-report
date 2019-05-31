@@ -1,4 +1,5 @@
-// https://doc.rust-jp.rs/book/second-edition/ch20-01-single-threaded.html
+// https://doc.rust-jp.rs/book/second-edition/ch20-00-final-project-a-web-server.html
+
 extern crate multi_thread_server;
 
 use multi_thread_server::ThreadPool;
@@ -13,13 +14,15 @@ fn main() {
     let listner = TcpListener::bind("127.0.0.1:7878").unwrap();
     let pool = ThreadPool::new(4);
 
-    for stream in listner.incoming() {
+    for stream in listner.incoming().take(2) {
         let stream = stream.unwrap();
 
         pool.execute(|| {
             handle_connection(stream);
         });
     }
+
+    println!("Shutting down.");
 }
 
 fn handle_connection(mut stream: TcpStream) {
