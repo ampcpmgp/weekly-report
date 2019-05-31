@@ -16,6 +16,7 @@ mod if_let;
 mod iterators;
 mod lifetime;
 mod loop_case;
+mod macros;
 mod match_case;
 mod module_scope;
 mod oo_design_patterns;
@@ -72,6 +73,7 @@ fn main() {
         "iterators" => iterators::run(),
         "lifetime" => lifetime::run(),
         "loop_case" => loop_case::run(),
+        "macros" => macros::run(),
         "match_case" => match_case::run(),
         "module_scope" => crate::module_scope::run(),
         "oo_design_patterns" => oo_design_patterns::run(),

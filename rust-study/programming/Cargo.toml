@@ -6,3 +6,5 @@ edition = "2018"
 
 [dependencies]
 rand = "0.6.5"
+hello_macro = {path="./hello_macro"}
+hello_macro_derive = {path="./hello_macro_derive"}
