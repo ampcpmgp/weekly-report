@@ -1,0 +1,4 @@
+{
+  "rust.unstable_features": true,
+  "rust.features": ["vulkan"],
+}
