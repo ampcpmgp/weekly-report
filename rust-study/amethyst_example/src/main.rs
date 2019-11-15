@@ -6,6 +6,7 @@ use amethyst::{
         RenderingBundle,
     },
     utils::application_root_dir,
+    LogLevelFilter, LoggerConfig,
 };
 
 struct MyState;
@@ -15,7 +16,9 @@ impl SimpleState for MyState {
 }
 
 fn main() -> amethyst::Result<()> {
-    amethyst::start_logger(Default::default());
+    let mut config = LoggerConfig::default();
+    config.level_filter = LogLevelFilter::Off;
+    amethyst::start_logger(config);
 
     let app_root = application_root_dir()?;
     let display_config_path = app_root.join("config").join("display.ron");
