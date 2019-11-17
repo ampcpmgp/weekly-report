@@ -1,3 +1,10 @@
+mod example_system;
+mod game_data;
+
+use crate::{
+    example_system::ExampleSystem,
+    game_data::{CustomGameData, CustomGameDataBuilder},
+};
 use amethyst::{
     input::is_key_down, prelude::*, utils::application_root_dir, window::WindowBundle,
     winit::VirtualKeyCode, LogLevelFilter, LoggerConfig,
