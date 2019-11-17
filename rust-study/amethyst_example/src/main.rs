@@ -1,18 +1,47 @@
 use amethyst::{
-    prelude::*,
-    renderer::{
-        plugins::{RenderFlat2D, RenderToWindow},
-        types::DefaultBackend,
-        RenderingBundle,
-    },
-    utils::application_root_dir,
-    LogLevelFilter, LoggerConfig,
+    input::is_key_down, prelude::*, utils::application_root_dir, window::WindowBundle,
+    winit::VirtualKeyCode, LogLevelFilter, LoggerConfig,
 };
+use std::sync::Once;
 
-struct MyState;
+static START: Once = Once::new();
 
-impl SimpleState for MyState {
-    fn on_start(&mut self, _data: StateData<'_, GameData<'_, '_>>) {}
+struct ExampleState;
+
+impl EmptyState for ExampleState {
+    fn on_start(&mut self, _: StateData<'_, ()>) {
+        println!("Begin!");
+    }
+    fn on_stop(&mut self, _: StateData<'_, ()>) {
+        println!("End!");
+    }
+    fn update(&mut self, _: StateData<'_, ()>) -> EmptyTrans {
+        START.call_once(|| {
+            println!("Hello from Amethyst!");
+        });
+        Trans::None
+    }
+}
+
+impl SimpleState for ExampleState {
+    fn on_start(&mut self, _: StateData<'_, GameData<'_, '_>>) {
+        println!("Begin!");
+    }
+    fn handle_event(
+        &mut self,
+        _: StateData<'_, GameData<'_, '_>>,
+        event: StateEvent,
+    ) -> SimpleTrans {
+        if let StateEvent::Window(event) = event {
+            if is_key_down(&event, VirtualKeyCode::Escape) {
+                Trans::Quit
+            } else {
+                Trans::None
+            }
+        } else {
+            Trans::None
+        }
+    }
 }
 
 fn main() -> amethyst::Result<()> {
@@ -21,21 +50,11 @@ fn main() -> amethyst::Result<()> {
     amethyst::start_logger(config);
 
     let app_root = application_root_dir()?;
-    let display_config_path = app_root.join("config").join("display.ron");
-    let assets_dir = app_root.join("assets");
-    let mut world = World::new();
-
-    let game_data = GameDataBuilder::default().with_bundle(
-        RenderingBundle::<DefaultBackend>::new()
-            .with_plugin(
-                RenderToWindow::from_config_path(display_config_path)
-                    .with_clear([0.0, 0.0, 0.0, 1.0]),
-            )
-            .with_plugin(RenderFlat2D::default()),
-    )?;
-
-    let mut game = Application::new(assets_dir, MyState, game_data)?;
-
+    let display_config_path = app_root.join("./config/display.ron");
+    let assets_dir = "./assets/";
+    let path = WindowBundle::from_config_path(display_config_path);
+    let game_data = GameDataBuilder::default().with_bundle(path)?;
+    let mut game = Application::new(assets_dir, ExampleState, game_data)?;
     game.run();
 
     Ok(())
