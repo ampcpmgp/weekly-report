@@ -5,6 +5,7 @@ use crate::{
     example_system::ExampleSystem,
     game_data::{CustomGameData, CustomGameDataBuilder},
 };
+
 use amethyst::{
     assets::{
         Completion, Handle, Prefab, PrefabLoader, PrefabLoaderSystemDesc, ProgressCounter,
@@ -30,12 +31,14 @@ use amethyst::{
     winit::VirtualKeyCode,
     Error, LogLevelFilter, LoggerConfig,
 };
+
 use std::sync::Once;
 
 static START: Once = Once::new();
 type MyPrefabData = BasicScenePrefab<(Vec<Position>, Vec<Normal>, Vec<TexCoord>)>;
 
 struct ExampleState;
+
 impl SimpleState for ExampleState {
     fn on_start(&mut self, _: StateData<'_, GameData<'_, '_>>) {
         println!("Begin!");
@@ -197,14 +200,17 @@ impl Component for Tag {
 }
 
 fn main() -> amethyst::Result<()> {
-    let mut config = LoggerConfig::default();
-    config.level_filter = LogLevelFilter::Off;
-    amethyst::start_logger(config);
+    amethyst::Logger::from_config(LoggerConfig {
+        level_filter: LogLevelFilter::Off,
+        ..Default::default()
+    })
+    .start();
 
     let app_root = application_root_dir()?;
     let display_config_path = app_root.join("./config/display.ron");
     let assets_dir = "./assets/";
     let path = WindowBundle::from_config_path(display_config_path);
+
     let game_data = GameDataBuilder::default().with_bundle(path)?;
     let mut game = Application::new(assets_dir, ExampleState, game_data)?;
     game.run();
