@@ -47,7 +47,7 @@ struct Loading {
     paused_ui: Option<Handle<UiPrefab>>,
 }
 impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Loading {
-    fn on_start(&mut self, data: StateData<'_, CustomGameData<'_, '_>>) {
+    fn on_start(&mut self, data: StateData<'_, CustomGameData>) {
         let StateData { world, .. } = data;
 
         self.scene = Some(world.exec(|loader: PrefabLoader<'_, MyPrefabData>| {
@@ -72,7 +72,7 @@ impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Loading {
 
     fn handle_event(
         &mut self,
-        _: StateData<'_, CustomGameData<'_, '_>>,
+        _: StateData<'_, CustomGameData>,
         event: StateEvent,
     ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
         if let StateEvent::Window(event) = event {
@@ -86,7 +86,7 @@ impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Loading {
 
     fn update(
         &mut self,
-        data: StateData<'_, CustomGameData<'_, '_>>,
+        data: StateData<'_, CustomGameData>,
     ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
         let StateData { data, world } = data;
 
@@ -120,7 +120,7 @@ struct Paused {
 impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Paused {
     fn handle_event(
         &mut self,
-        data: StateData<'_, CustomGameData<'_, '_>>,
+        data: StateData<'_, CustomGameData>,
         event: StateEvent,
     ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
         if let StateEvent::Window(event) = &event {
@@ -139,7 +139,7 @@ impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Paused {
 
     fn update(
         &mut self,
-        data: StateData<'_, CustomGameData<'_, '_>>,
+        data: StateData<'_, CustomGameData>,
     ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
         data.data.update(&data.world, false);
         Trans::None
@@ -157,7 +157,7 @@ impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Main {
 
     fn handle_event(
         &mut self,
-        data: StateData<'_, CustomGameData<'_, '_>>,
+        data: StateData<'_, CustomGameData>,
         event: StateEvent,
     ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
         if let StateEvent::Window(event) = &event {
@@ -181,9 +181,9 @@ impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Main {
 
     fn update(
         &mut self,
-        data: StateData<'_, CustomGameData<'_, '_>>,
+        data: StateData<'_, CustomGameData>,
     ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
-        data.data.update(&data.world, false);
+        data.data.update(&data.world, true);
         Trans::None
     }
 }
