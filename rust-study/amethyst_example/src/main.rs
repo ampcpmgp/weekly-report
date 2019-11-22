@@ -37,42 +37,6 @@ use std::sync::Once;
 static START: Once = Once::new();
 type MyPrefabData = BasicScenePrefab<(Vec<Position>, Vec<Normal>, Vec<TexCoord>)>;
 
-struct ExampleState;
-
-impl SimpleState for ExampleState {
-    fn on_start(&mut self, _: StateData<'_, GameData<'_, '_>>) {
-        println!("Begin!");
-    }
-
-    fn on_stop(&mut self, _: StateData<'_, GameData<'_, '_>>) {
-        println!("End!");
-    }
-
-    fn update(&mut self, _data: &mut StateData<'_, GameData<'_, '_>>) -> SimpleTrans {
-        START.call_once(|| {
-            println!("Hello from Amethyst!");
-        });
-
-        Trans::None
-    }
-
-    fn handle_event(
-        &mut self,
-        _: StateData<'_, GameData<'_, '_>>,
-        event: StateEvent,
-    ) -> SimpleTrans {
-        if let StateEvent::Window(event) = event {
-            if is_key_down(&event, VirtualKeyCode::Escape) {
-                Trans::Quit
-            } else {
-                Trans::None
-            }
-        } else {
-            Trans::None
-        }
-    }
-}
-
 pub struct DemoState {
     light_angle: f32,
     light_color: Srgb,
@@ -211,8 +175,13 @@ fn main() -> amethyst::Result<()> {
     let assets_dir = "./assets/";
     let path = WindowBundle::from_config_path(display_config_path);
 
-    let game_data = GameDataBuilder::default().with_bundle(path)?;
-    let mut game = Application::new(assets_dir, ExampleState, game_data)?;
+    let game_data = CustomGameDataBuilder::default().with_base(
+        PrefabLoaderSystemDesc::<MyPrefabData>::default(),
+        "",
+        &[],
+    );
+
+    let mut game = Application::build(assets_dir, Loading::default())?.build(game_data)?;
     game.run();
 
     Ok(())
