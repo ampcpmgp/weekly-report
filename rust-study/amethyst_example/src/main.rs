@@ -27,9 +27,8 @@ use amethyst::{
     },
     ui::{RenderUi, UiBundle, UiCreator, UiLoader, UiPrefab},
     utils::{application_root_dir, fps_counter::FpsCounterBundle, scene::BasicScenePrefab},
-    window::WindowBundle,
     winit::VirtualKeyCode,
-    Error, LogLevelFilter, LoggerConfig,
+    LogLevelFilter, LoggerConfig,
 };
 
 type MyPrefabData = BasicScenePrefab<(Vec<Position>, Vec<Normal>, Vec<TexCoord>)>;
@@ -204,9 +203,8 @@ fn main() -> amethyst::Result<()> {
     .start();
 
     let app_root = application_root_dir()?;
-    let display_config_path = app_root.join("./config/display.ron");
-    let assets_dir = "./assets/";
-    let path = WindowBundle::from_config_path(&display_config_path);
+    let display_config_path = app_root.join("config/display.ron");
+    let assets_dir = "assets";
 
     let game_data = CustomGameDataBuilder::default()
         .with_base(PrefabLoaderSystemDesc::<MyPrefabData>::default(), "", &[])
