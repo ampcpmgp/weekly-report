@@ -1,5 +1,4 @@
 (
   title: "amethyst_example",
   icon: Some("assets/logo.png"),
-  dimensions: Some((500, 500)),
 )

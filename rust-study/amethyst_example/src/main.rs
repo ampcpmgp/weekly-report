@@ -32,9 +32,6 @@ use amethyst::{
     Error, LogLevelFilter, LoggerConfig,
 };
 
-use std::sync::Once;
-
-static START: Once = Once::new();
 type MyPrefabData = BasicScenePrefab<(Vec<Position>, Vec<Normal>, Vec<TexCoord>)>;
 
 pub struct DemoState {
@@ -120,7 +117,35 @@ impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Loading {
 struct Paused {
     ui: Entity,
 }
-impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Paused {}
+
+impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Paused {
+    fn handle_event(
+        &mut self,
+        data: StateData<'_, CustomGameData<'_, '_>>,
+        event: StateEvent,
+    ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
+        if let StateEvent::Window(event) = &event {
+            if is_close_requested(&event) || is_key_down(&event, VirtualKeyCode::Escape) {
+                Trans::Quit
+            } else if is_key_down(&event, VirtualKeyCode::Space) {
+                let _ = data.world.delete_entity(self.ui);
+                Trans::Pop
+            } else {
+                Trans::None
+            }
+        } else {
+            Trans::None
+        }
+    }
+
+    fn update(
+        &mut self,
+        data: StateData<'_, CustomGameData<'_, '_>>,
+    ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
+        data.data.update(&data.world, false);
+        Trans::None
+    }
+}
 
 struct Main {
     scene: Handle<Prefab<MyPrefabData>>,
@@ -154,6 +179,14 @@ impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Main {
 
         Trans::None
     }
+
+    fn update(
+        &mut self,
+        data: StateData<'_, CustomGameData<'_, '_>>,
+    ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
+        data.data.update(&data.world, false);
+        Trans::None
+    }
 }
 
 #[derive(Default)]
@@ -173,13 +206,24 @@ fn main() -> amethyst::Result<()> {
     let app_root = application_root_dir()?;
     let display_config_path = app_root.join("./config/display.ron");
     let assets_dir = "./assets/";
-    let path = WindowBundle::from_config_path(display_config_path);
+    let path = WindowBundle::from_config_path(&display_config_path);
 
-    let game_data = CustomGameDataBuilder::default().with_base(
-        PrefabLoaderSystemDesc::<MyPrefabData>::default(),
-        "",
-        &[],
-    );
+    let game_data = CustomGameDataBuilder::default()
+        .with_base(PrefabLoaderSystemDesc::<MyPrefabData>::default(), "", &[])
+        .with_running(ExampleSystem::default(), "example_system", &[])
+        .with_base_bundle(TransformBundle::new())
+        .with_base_bundle(UiBundle::<StringBindings>::new())
+        .with_base_bundle(FpsCounterBundle::default())
+        .with_base_bundle(InputBundle::<StringBindings>::new())
+        .with_base_bundle(
+            RenderingBundle::<DefaultBackend>::new()
+                .with_plugin(
+                    RenderToWindow::from_config_path(&display_config_path)
+                        .with_clear([0.0, 0.0, 0.0, 1.0]),
+                )
+                .with_plugin(RenderShaded3D::default())
+                .with_plugin(RenderUi::default()),
+        );
 
     let mut game = Application::build(assets_dir, Loading::default())?.build(game_data)?;
     game.run();
