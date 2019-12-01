@@ -5,6 +5,7 @@ authors = []
 edition = "2018"
 
 [dependencies]
+serde = {version = "1.0.103", features = ["derive"]}
 
 [dependencies.amethyst]
 version = "0.13.2"
@@ -14,3 +15,7 @@ default = ["vulkan"]
 empty = ["amethyst/empty"]
 metal = ["amethyst/metal"]
 vulkan = ["amethyst/vulkan"]
+
+[[example]]
+name = "qbit"
+path = "src_qbit/main.rs"

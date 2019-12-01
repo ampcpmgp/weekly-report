@@ -1,5 +1,10 @@
 # amethyst_example
 
+量子ビットサンプル
+```shell
+cargo run --example qbit
+```
+
 ## How to run
 
 To run the game, use

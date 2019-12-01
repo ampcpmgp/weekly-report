@@ -1,0 +1,9 @@
+/*!
+    @import /amethyst_window/src/config.rs#DisplayConfig
+    DisplayConfig
+*/
+
+(
+  title: "amethyst_example_qbit",
+  icon: Some("assets/logo.png"),
+)
