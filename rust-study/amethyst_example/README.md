@@ -1,31 +1,19 @@
 # amethyst_example
 
-量子ビットサンプル
+## How to run
+
+### 各API一通り触って動かしたもの
+
+```shell
+# https://docs-src.amethyst.rs/stable/amethyst/
+cargo run --example api simple_state # SimpleState
+
+
+```
+
+
+
+### 量子ビットサンプル
 ```shell
 cargo run --example qbit
 ```
-
-## How to run
-
-To run the game, use
-
-```
-cargo run --features "vulkan"
-```
-
-on Windows and Linux, and
-
-```
-cargo run --features "metal"
-```
-
-on macOS.
-
-For building without any graphics backend, you can use
-
-```
-cargo run --features "empty"
-```
-
-but be aware that as soon as you need any rendering you won't be able to run your game when using
-the `empty` feature.
