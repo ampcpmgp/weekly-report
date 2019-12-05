@@ -15,11 +15,3 @@ default = ["vulkan"]
 empty = ["amethyst/empty"]
 metal = ["amethyst/metal"]
 vulkan = ["amethyst/vulkan"]
-
-[[example]]
-name = "qbit"
-path = "src_qbit/main.rs"
-
-[[example]]
-name = "api"
-path = "src_all_api/main.rs"

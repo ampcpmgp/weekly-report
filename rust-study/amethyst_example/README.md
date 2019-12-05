@@ -3,9 +3,14 @@
 ## State
 
 ```shell
-# https://docs-src.amethyst.rs/stable/amethyst/
-cargo run simple_state # SimpleState
+cargo run empty_state
+cargo run simple_state
+cargo run state
+```
 
+## Etc
 
+```shell
+cargo run window
 ```
 
