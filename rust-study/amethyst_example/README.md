@@ -12,5 +12,6 @@ cargo run state
 
 ```shell
 cargo run window
+cargo run custom_game_data
 ```
 

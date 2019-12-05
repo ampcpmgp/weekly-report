@@ -18,6 +18,7 @@ fn main() -> amethyst::Result<()> {
         "simple_state" => examples::simple_state::run(),
         "state" => examples::state::run(),
         "window" => examples::window::run(),
+        "custom_game_data" => examples::custom_game_data::run(),
         _ => panic!("`src_all_api/examples` のmod名と一致しません。"),
     }
 }
