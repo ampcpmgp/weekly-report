@@ -3,15 +3,5 @@
 ## State
 
 ```shell
-cargo run empty_state
-cargo run simple_state
-cargo run state
+cargo run --example name_of_example
 ```
-
-## Etc
-
-```shell
-cargo run window
-cargo run custom_game_data
-```
-

@@ -6,7 +6,7 @@ struct GameState;
 
 impl SimpleState for GameState {}
 
-pub fn run() -> amethyst::Result<()> {
+pub fn main() -> amethyst::Result<()> {
     let app_root = application_root_dir()?;
     let display_config_path = app_root.join("config/display.ron");
     let assets_dir = app_root.join("assets/");

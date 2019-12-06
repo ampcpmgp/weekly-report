@@ -14,7 +14,7 @@ impl SimpleState for GameState {
     }
 }
 
-pub fn run() -> amethyst::Result<()> {
+pub fn main() -> amethyst::Result<()> {
     let asset_dir = "assets/";
     let mut game = Application::new(asset_dir, GameState, GameDataBuilder::default())?;
 
