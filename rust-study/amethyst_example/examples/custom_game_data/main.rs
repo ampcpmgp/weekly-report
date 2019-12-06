@@ -7,11 +7,17 @@ use amethyst::input::{InputBundle, StringBindings};
 use amethyst::prelude::*;
 use amethyst::renderer::{plugins::RenderToWindow, types::DefaultBackend, RenderingBundle};
 use amethyst::ui::UiBundle;
+use amethyst::{LogLevelFilter, LoggerConfig};
 use game_data::CustomGameDataBuilder;
 use state::Main;
 use system::ExampleSystem;
 
 pub fn main() -> amethyst::Result<()> {
+    amethyst::start_logger(LoggerConfig {
+        level_filter: LogLevelFilter::Off,
+        ..LoggerConfig::default()
+    });
+
     let app_root = amethyst::utils::application_root_dir()?;
     let display_config_path = app_root.join("config/diplay.ron");
     let assets_directory = app_root.join("assets");

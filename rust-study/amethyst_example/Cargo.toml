@@ -18,16 +18,16 @@ vulkan = ["amethyst/vulkan"]
 
 [[example]]
 name = "empty_state"
-path = "src/examples/empty_state/main.rs"
+path = "examples/empty_state/main.rs"
 
 [[example]]
 name = "simple_state"
-path = "src/examples/simple_state/main.rs"
+path = "examples/simple_state/main.rs"
 
 [[example]]
 name = "window"
-path = "src/examples/window/main.rs"
+path = "examples/window/main.rs"
 
 [[example]]
 name = "custom_game_data"
-path = "src/examples/custom_game_data/main.rs"
+path = "examples/custom_game_data/main.rs"
