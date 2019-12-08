@@ -1,22 +1,39 @@
-use amethyst::core::{ArcThreadPool, SystemBundle};
-use amethyst::ecs::prelude::*;
-use amethyst::{DataDispose, DataInit, Error};
+use std::marker::PhantomData;
+
+use amethyst::{
+    core::{ArcThreadPool, SystemBundle, SystemDesc},
+    ecs::prelude::{Dispatcher, DispatcherBuilder, System, World, WorldExt},
+    error::Error,
+    DataDispose, DataInit,
+};
 
 pub struct CustomGameData<'a, 'b> {
-    pub core_dispatcher: Dispatcher<'a, 'b>,
-    pub running_dispatcher: Dispatcher<'a, 'b>,
+    pub base: Option<Dispatcher<'a, 'b>>,
+    pub running: Option<Dispatcher<'a, 'b>>,
 }
 
 impl<'a, 'b> CustomGameData<'a, 'b> {
+    /// Update game data
     pub fn update(&mut self, world: &World, running: bool) {
         if running {
-            self.running_dispatcher.dispatch(&world);
+            if let Some(running) = &mut self.running {
+                running.dispatch(&world);
+            }
         }
-
-        self.core_dispatcher.dispatch(&world);
+        if let Some(base) = &mut self.base {
+            base.dispatch(&world);
+        }
     }
 
-    pub fn dispose(&mut self, _world: &mut World) {}
+    /// Dispose game data, dropping the dispatcher
+    pub fn dispose(&mut self, world: &mut World) {
+        if let Some(base) = self.base.take() {
+            base.dispose(world);
+        }
+        if let Some(running) = self.running.take() {
+            running.dispose(world);
+        }
+    }
 }
 
 impl DataDispose for CustomGameData<'_, '_> {
@@ -26,12 +43,12 @@ impl DataDispose for CustomGameData<'_, '_> {
 }
 
 pub struct CustomGameDataBuilder<'a, 'b> {
-    pub core: DispatcherBuilder<'a, 'b>,
-    pub running: DispatcherBuilder<'a, 'b>,
+    base_dispatcher_operations: Vec<Box<dyn DispatcherOperation<'a, 'b>>>,
+    running_dispatcher_operations: Vec<Box<dyn DispatcherOperation<'a, 'b>>>,
 }
 
-impl<'a, 'b> CustomGameDataBuilder<'a, 'b> {
-    pub fn default() -> Self {
+impl<'a, 'b> Default for CustomGameDataBuilder<'a, 'b> {
+    fn default() -> Self {
         CustomGameDataBuilder::new()
     }
 }
@@ -39,41 +56,145 @@ impl<'a, 'b> CustomGameDataBuilder<'a, 'b> {
 impl<'a, 'b> CustomGameDataBuilder<'a, 'b> {
     pub fn new() -> Self {
         CustomGameDataBuilder {
-            core: DispatcherBuilder::new(),
-            running: DispatcherBuilder::new(),
+            base_dispatcher_operations: vec![],
+            running_dispatcher_operations: vec![],
         }
     }
 
-    pub fn with_base_bundle<B>(mut self, world: &mut World, bundle: B) -> Result<Self, Error>
+    pub fn with_base<SD, S>(
+        mut self,
+        system_desc: SD,
+        name: &'static str,
+        dependencies: &'static [&'static str],
+    ) -> Self
     where
-        B: SystemBundle<'a, 'b>,
+        SD: SystemDesc<'a, 'b, S> + 'static,
+        S: for<'c> System<'c> + 'static + Send,
     {
-        bundle.build(world, &mut self.core)?;
-        Ok(self)
+        let dispatcher_operation = Box::new(AddSystem {
+            system_desc,
+            name,
+            dependencies,
+            marker: PhantomData::<S>,
+        }) as Box<dyn DispatcherOperation<'a, 'b> + 'static>;
+        self.base_dispatcher_operations.push(dispatcher_operation);
+        self
     }
 
-    pub fn with_running<S>(mut self, system: S, name: &str, dependencies: &[&str]) -> Self
+    pub fn with_base_bundle<B>(mut self, bundle: B) -> Self
     where
-        for<'c> S: System<'c> + Send + 'a,
+        B: SystemBundle<'a, 'b> + 'static,
     {
-        self.running.add(system, name, dependencies);
+        self.base_dispatcher_operations
+            .push(Box::new(AddBundle { bundle }));
+        self
+    }
+
+    pub fn with_running<SD, S>(
+        mut self,
+        system_desc: SD,
+        name: &'static str,
+        dependencies: &'static [&'static str],
+    ) -> Self
+    where
+        SD: SystemDesc<'a, 'b, S> + 'static,
+        S: for<'c> System<'c> + 'static + Send,
+    {
+        let dispatcher_operation = Box::new(AddSystem {
+            system_desc,
+            name,
+            dependencies,
+            marker: PhantomData::<S>,
+        }) as Box<dyn DispatcherOperation<'a, 'b> + 'static>;
+        self.running_dispatcher_operations
+            .push(dispatcher_operation);
         self
     }
 }
 
 impl<'a, 'b> DataInit<CustomGameData<'a, 'b>> for CustomGameDataBuilder<'a, 'b> {
     fn build(self, world: &mut World) -> CustomGameData<'a, 'b> {
-        let pool = (*world.read_resource::<ArcThreadPool>()).clone();
-
-        let mut core_dispatcher = self.core.with_pool(pool.clone()).build();
-        let mut running_dispatcher = self.running.with_pool(pool.clone()).build();
-
-        core_dispatcher.setup(world);
-        running_dispatcher.setup(world);
+        let base = build_dispatcher(world, self.base_dispatcher_operations);
+        let running = build_dispatcher(world, self.running_dispatcher_operations);
 
         CustomGameData {
-            core_dispatcher,
-            running_dispatcher,
+            base: Some(base),
+            running: Some(running),
         }
+    }
+}
+
+fn build_dispatcher<'a, 'b>(
+    world: &mut World,
+    dispatcher_operations: Vec<Box<dyn DispatcherOperation<'a, 'b>>>,
+) -> Dispatcher<'a, 'b> {
+    let mut dispatcher_builder = DispatcherBuilder::new();
+
+    #[cfg(not(no_threading))]
+    {
+        let pool = world.read_resource::<ArcThreadPool>().clone();
+        dispatcher_builder = dispatcher_builder.with_pool((*pool).clone());
+    }
+
+    dispatcher_operations
+        .into_iter()
+        .try_for_each(|dispatcher_operation| {
+            dispatcher_operation.exec(world, &mut dispatcher_builder)
+        })
+        .unwrap_or_else(|e| panic!("Failed to set up dispatcher: {}", e));
+
+    let mut dispatcher = dispatcher_builder.build();
+    dispatcher.setup(world);
+    dispatcher
+}
+
+/// Trait to capture deferred dispatcher builder operations.
+trait DispatcherOperation<'a, 'b> {
+    /// Executes the dispatcher builder instruction.
+    fn exec(
+        self: Box<Self>,
+        world: &mut World,
+        dispatcher_builder: &mut DispatcherBuilder<'a, 'b>,
+    ) -> Result<(), Error>;
+}
+
+struct AddSystem<SD, S> {
+    system_desc: SD,
+    name: &'static str,
+    dependencies: &'static [&'static str],
+    marker: PhantomData<S>,
+}
+
+impl<'a, 'b, SD, S> DispatcherOperation<'a, 'b> for AddSystem<SD, S>
+where
+    SD: SystemDesc<'a, 'b, S>,
+    S: for<'s> System<'s> + Send + 'a,
+{
+    fn exec(
+        self: Box<Self>,
+        world: &mut World,
+        dispatcher_builder: &mut DispatcherBuilder<'a, 'b>,
+    ) -> Result<(), Error> {
+        let system = self.system_desc.build(world);
+        dispatcher_builder.add(system, self.name, self.dependencies);
+        Ok(())
+    }
+}
+
+struct AddBundle<B> {
+    bundle: B,
+}
+
+impl<'a, 'b, B> DispatcherOperation<'a, 'b> for AddBundle<B>
+where
+    B: SystemBundle<'a, 'b>,
+{
+    fn exec(
+        self: Box<Self>,
+        world: &mut World,
+        dispatcher_builder: &mut DispatcherBuilder<'a, 'b>,
+    ) -> Result<(), Error> {
+        self.bundle.build(world, dispatcher_builder)?;
+        Ok(())
     }
 }
