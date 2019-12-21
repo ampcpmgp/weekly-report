@@ -4,7 +4,6 @@ use crate::{example_system::ExampleSystem, game_data::CustomGameDataBuilder};
 use amethyst::{
     assets::PrefabLoaderSystemDesc,
     core::transform::TransformBundle,
-    ecs::{prelude::Component, NullStorage},
     input::{InputBundle, StringBindings},
     prelude::*,
     renderer::{
@@ -24,13 +23,6 @@ pub mod states;
 
 use resources::MainPrefab;
 use states::Loading;
-
-#[derive(Default)]
-struct Tag;
-
-impl Component for Tag {
-    type Storage = NullStorage<Self>;
-}
 
 fn main() -> Result<(), Error> {
     amethyst::Logger::from_config(amethyst::LoggerConfig {
