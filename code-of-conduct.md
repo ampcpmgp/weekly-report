@@ -4,7 +4,7 @@
 
 * Rust / Code of conduct
   * https://www.rust-lang.org/policies/code-of-conduct
-* シチズン企業行動規範
+* Citizen Code of Conduct
   * http://citizencodeofconduct.org/
 
 ## 行動
