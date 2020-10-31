@@ -4,8 +4,7 @@
   "description": "issueに今週やったことを書いていきます。\r 学習用コードやサンプルがある場合、レポジトリにコードをコミットしていきます。",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "precommit": "lint-staged"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -17,27 +16,5 @@
     "url": "https://github.com/ampcpmgp/weekly-report/issues"
   },
   "homepage": "https://github.com/ampcpmgp/weekly-report#readme",
-  "devDependencies": {
-    "husky": "^0.14.3",
-    "lint-staged": "^7.2.2",
-    "prettier": "^1.14.2",
-    "standard": "^11.0.1"
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
-  },
-  "lint-staged": {
-    "linters": {
-      "*.js": [
-        "prettier --write",
-        "standard --fix",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "**/lib/*.js",
-      "**/public/*.js"
-    ]
-  }
+  "devDependencies": {}
 }
