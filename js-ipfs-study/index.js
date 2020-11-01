@@ -1,20 +1,24 @@
 import IPFS from "ipfs";
 
-let node;
+const nodeP = createNode();
 
-async function init() {
-  node = await IPFS.create({ repo: String(Math.random() + Date.now()) });
+async function createNode() {
+  const node = await IPFS.create({ repo: String(Math.random() + Date.now()) });
   // generating 2048-bit (rsa only) RSA keypair...
+
+  return node;
 }
 
 async function start() {
-  await init();
-  functionMap[location.search]?.();
+  await functionMap[location.search]?.();
 }
 
 const functionMap = {
   async ""() {
-    console.log(node);
+    const node = await nodeP;
+    const version = await node.version();
+
+    console.log(version);
   },
 
   "?BITSWAP"() {
