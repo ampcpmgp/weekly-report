@@ -16,5 +16,7 @@
     "url": "https://github.com/ampcpmgp/weekly-report/issues"
   },
   "homepage": "https://github.com/ampcpmgp/weekly-report#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^7.12.1"
+  }
 }
