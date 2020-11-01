@@ -10,10 +10,10 @@ async function createNode() {
 }
 
 async function start() {
-  await functionMap[location.search]?.();
+  await mappedFunction[location.search]?.();
 }
 
-const functionMap = {
+const mappedFunction = {
   async ""() {
     const node = await nodeP;
     const version = await node.version();
