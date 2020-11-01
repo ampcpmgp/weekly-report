@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ampcpmgp/weekly-report#readme",
   "devDependencies": {
-    "eslint": "^7.12.1"
+    "eslint": "^7.12.1",
+    "prettier": "^2.1.2"
   }
 }
