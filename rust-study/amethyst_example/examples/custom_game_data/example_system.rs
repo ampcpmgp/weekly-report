@@ -1,14 +1,11 @@
-use super::DemoState;
+use crate::resources::Demo;
 use amethyst::{
     core::{
         math::{UnitQuaternion, Vector3},
-        Time, Transform,
+        SystemDesc, Time, Transform,
     },
     derive::SystemDesc,
-    ecs::prelude::{
-        Entity, Join, Read, ReadStorage, System, SystemData, WriteExpect, WriteStorage,
-    },
-    prelude::*,
+    ecs::prelude::*,
     renderer::{camera::Camera, light::Light},
     ui::{UiFinder, UiText},
     utils::fps_counter::FpsCounter,
@@ -26,7 +23,7 @@ impl<'a> System<'a> for ExampleSystem {
         Read<'a, Time>,
         ReadStorage<'a, Camera>,
         WriteStorage<'a, Transform>,
-        WriteExpect<'a, DemoState>,
+        WriteExpect<'a, Demo>,
         WriteStorage<'a, UiText>,
         Read<'a, FpsCounter>,
         UiFinder<'a>,

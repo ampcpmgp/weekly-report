@@ -7,37 +7,29 @@ use amethyst::{
     DataDispose, DataInit,
 };
 
-trait DispatcherOperation<'a, 'b> {
-    fn exec(
-        self: Box<Self>,
-        world: &mut World,
-        dispatcher_builder: &mut DispatcherBuilder<'a, 'b>,
-    ) -> Result<(), Error>;
-}
-
 pub struct CustomGameData<'a, 'b> {
     pub base: Option<Dispatcher<'a, 'b>>,
     pub running: Option<Dispatcher<'a, 'b>>,
 }
 
 impl<'a, 'b> CustomGameData<'a, 'b> {
+    /// Update game data
     pub fn update(&mut self, world: &World, running: bool) {
         if running {
             if let Some(running) = &mut self.running {
                 running.dispatch(&world);
             }
         }
-
         if let Some(base) = &mut self.base {
             base.dispatch(&world);
         }
     }
 
+    /// Dispose game data, dropping the dispatcher
     pub fn dispose(&mut self, world: &mut World) {
         if let Some(base) = self.base.take() {
             base.dispose(world);
         }
-
         if let Some(running) = self.running.take() {
             running.dispose(world);
         }
@@ -85,7 +77,6 @@ impl<'a, 'b> CustomGameDataBuilder<'a, 'b> {
             dependencies,
             marker: PhantomData::<S>,
         }) as Box<dyn DispatcherOperation<'a, 'b> + 'static>;
-
         self.base_dispatcher_operations.push(dispatcher_operation);
         self
     }
@@ -121,6 +112,18 @@ impl<'a, 'b> CustomGameDataBuilder<'a, 'b> {
     }
 }
 
+impl<'a, 'b> DataInit<CustomGameData<'a, 'b>> for CustomGameDataBuilder<'a, 'b> {
+    fn build(self, world: &mut World) -> CustomGameData<'a, 'b> {
+        let base = build_dispatcher(world, self.base_dispatcher_operations);
+        let running = build_dispatcher(world, self.running_dispatcher_operations);
+
+        CustomGameData {
+            base: Some(base),
+            running: Some(running),
+        }
+    }
+}
+
 fn build_dispatcher<'a, 'b>(
     world: &mut World,
     dispatcher_operations: Vec<Box<dyn DispatcherOperation<'a, 'b>>>,
@@ -145,16 +148,14 @@ fn build_dispatcher<'a, 'b>(
     dispatcher
 }
 
-impl<'a, 'b> DataInit<CustomGameData<'a, 'b>> for CustomGameDataBuilder<'a, 'b> {
-    fn build(self, world: &mut World) -> CustomGameData<'a, 'b> {
-        let base = build_dispatcher(world, self.base_dispatcher_operations);
-        let running = build_dispatcher(world, self.running_dispatcher_operations);
-
-        CustomGameData {
-            base: Some(base),
-            running: Some(running),
-        }
-    }
+/// Trait to capture deferred dispatcher builder operations.
+trait DispatcherOperation<'a, 'b> {
+    /// Executes the dispatcher builder instruction.
+    fn exec(
+        self: Box<Self>,
+        world: &mut World,
+        dispatcher_builder: &mut DispatcherBuilder<'a, 'b>,
+    ) -> Result<(), Error>;
 }
 
 struct AddSystem<SD, S> {
